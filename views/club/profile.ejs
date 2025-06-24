@@ -1,0 +1,200 @@
+<%- layout('layouts/boilerplate') %>
+
+<%- include('../partials/flash') %>
+
+<section id="club-profile" class="d-flex justify-content-center align-items-center min-vh-100 px-3">
+  <div class="profile-wrapper p-4 rounded-5 shadow-lg w-100" style="max-width: 950px;">
+
+    <h1 class="text-center mb-4 display-4 fw-bold text-gradient"><%= club.name %></h1>
+
+    <!-- Info Grid -->
+    <div class="info-grid mb-5">
+      <% const infoItems = [
+        { icon: "bi-envelope-fill", label: "Email", value: club.email },
+        { icon: "bi-telephone-fill", label: "Contact", value: club.contactNumber },
+        { icon: "bi-cash-stack", label: "Fee Range", value: club.membershipFeeRange },
+        { icon: "bi-geo-alt-fill", label: "Location", value: club.location },
+        { icon: "bi-globe", label: "Website", value: `<a href="${club.website}" target="_blank">${club.website}</a>` },
+        { icon: "bi-calendar-event-fill", label: "360 View", value: `<a href="${club.view360Link}" target="_blank">View</a>` },
+        { icon: "bi-people-fill", label: "Sponsors", value: club.sponsors.join(', ') },
+        { icon: "bi-person-fill", label: "Members", value: club.totalMembers },
+        { icon: "bi-hourglass-split", label: "Age Range", value: club.ageRange },
+        { icon: "bi-megaphone-fill", label: "Reach", value: club.reach },
+        { icon: "bi-calendar-check-fill", label: "Availability", value: club.availability },
+        { icon: "bi-grid-fill", label: "Segment", value: club.segment },
+        { icon: "bi-industry", label: "Industry", value: club.industry },
+        { icon: "bi-tags-fill", label: "Tags", value: club.segmentTags.join(', ') }
+      ]; %>
+
+      <% infoItems.forEach(item => { %>
+        <div class="info-item border-bottom pb-2 mb-2">
+          <i class="bi <%= item.icon %> me-2 text-accent"></i>
+          <strong><%= item.label %>:</strong> <span><%- item.value %></span>
+        </div>
+      <% }) %>
+    </div>
+
+    <h3 class="mb-3 fw-semibold text-accent">Description</h3>
+    <p class="description-text mb-5"><%= club.description %></p>
+
+    <h3 class="mb-3 fw-semibold text-accent">Media Gallery</h3>
+    <div class="media-gallery row g-3 mb-4">
+      <% club.media.forEach(media => { %>
+        <div class="col-md-4">
+          <% if(media.match(/\.(mp4|mov|avi)$/i)) { %>
+            <video class="rounded shadow w-100 media-click" data-type="video" data-src="<%= media %>" muted loop playsinline>
+              <source src="<%= media %>" type="video/mp4">
+            </video>
+          <% } else { %>
+            <img src="<%= media %>" alt="Media" class="img-fluid rounded shadow media-click w-100" data-type="image" data-src="<%= media %>">
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/club/edit-profile" class="btn btn-primary px-5 py-2 fs-5 fw-semibold shadow-sm">Edit Profile</a>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-dark border-0 rounded-4">
+      <div class="modal-body text-center p-3">
+        <span class="text-white" id="mediaContainer"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background: url('/uploads/clubs/1746288248790-791790165.jpg') center center / cover no-repeat fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+
+  .profile-wrapper {
+    background: rgba(30, 30, 30, 0.65);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.8);
+    padding: 50px;
+    margin-top: 2rem;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+  }
+
+  .text-accent {
+    color: #ff8080;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .info-item {
+    font-size: 1.05rem;
+    font-weight: 500;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .info-item strong {
+    color: #ff6a6a;
+    min-width: 140px;
+  }
+
+  a {
+    color: #ff6a6a;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: #ff9966;
+    text-decoration: none;
+  }
+
+  .description-text {
+    font-size: 1.1rem;
+    color: #eee;
+    line-height: 1.7;
+  }
+
+  .media-gallery video,
+  .media-gallery img {
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .media-gallery video:hover,
+  .media-gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(255, 106, 106, 0.7);
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    box-shadow: 0 8px 28px rgba(255, 106, 106, 0.4);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 44px rgba(255, 106, 106, 0.65);
+  }
+
+  /* Modal media */
+  #mediaModal .modal-content {
+    border-radius: 28px;
+  }
+
+  #mediaContainer img,
+  #mediaContainer video {
+    max-height: 85vh;
+    max-width: 100%;
+    border-radius: 18px;
+    box-shadow: 0 12px 44px rgba(255, 106, 106, 0.7);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const mediaElements = document.querySelectorAll('.media-click');
+    const mediaContainer = document.getElementById('mediaContainer');
+
+    mediaElements.forEach(el => {
+      el.addEventListener('click', () => {
+        const type = el.dataset.type;
+        const src = el.dataset.src;
+
+        if (type === 'image') {
+          mediaContainer.innerHTML = `<img src="${src}" alt="Media" />`;
+        } else if (type === 'video') {
+          mediaContainer.innerHTML = `<video controls autoplay muted style="max-width:100%; max-height:85vh;"><source src="${src}" type="video/mp4">Your browser does not support the video tag.</video>`;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('mediaModal'));
+        modal.show();
+      });
+    });
+  });
+</script>

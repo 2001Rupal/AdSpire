@@ -1,0 +1,148 @@
+<%- layout('layouts/boilerplate') %>
+
+
+<section id="login">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-box p-5 rounded-4 shadow" style="max-width: 420px; width: 100%;">
+      <h2 class="text-center mb-4 text-white">Login</h2>
+
+      
+      <form action="/request-otp" method="POST" class="d-flex flex-column gap-3">
+        <div>
+          <label for="email" class="form-label text-light">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-2">Send OTP</button>
+
+        <p class="text-center mt-3 mb-0 text-light">
+          Don’t have an account?
+          <a href="/" class="text-warning fw-semibold">Register</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Auto-hide alerts after 5 seconds
+  setTimeout(() => {
+    const alert = document.querySelector('.alert');
+    if (alert) {
+      alert.style.transition = 'opacity 0.5s ease';
+      alert.style.opacity = '0';
+      setTimeout(() => alert.remove(), 500); // Remove from DOM after fade out
+    }
+  }, 5000); // 5 seconds
+</script>
+
+<style>
+body {
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+  background-size: cover;
+  filter: brightness(0.6); /* background dim करने के लिए */
+  z-index: -2;
+}
+
+
+#login::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); /* काला translucent overlay */
+  z-index: -1;
+}
+
+#login .form-box {
+  background: rgba(255, 255, 255, 0.10); /* हल्का सफेद पारदर्शी */
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 40px 30px 50px 30px; /* padding adjust किया */
+  max-width: 420px;
+  width: 100%;
+}
+
+
+#login label {
+  color: #ddd;
+  font-weight: 500;
+}
+
+#login .form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#login .form-control::placeholder {
+  color: #bbb;
+}
+
+#login .btn-primary {
+  background: linear-gradient(to right, #ff6a6a, #ff9966);
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+  transition: 0.3s ease;
+}
+
+#login .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+}
+
+#login a {
+  text-decoration: none;
+}
+ @media (max-width: 576px) {
+   #login {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    min-height: auto; 
+    margin-top: 3rem;
+  }
+    #login .form-box {
+      padding: 25px 20px 35px 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+    }
+
+    #login h2 {
+      font-size: 1.8rem;
+    }
+
+    #login .form-control {
+      font-size: 0.95rem;
+      padding: 8px 10px;
+    }
+
+    #login .btn-primary {
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+
+    #login p {
+      font-size: 0.9rem;
+    }
+     .container {
+    min-height: unset !important; 
+    
+  }
+  }
+</style>

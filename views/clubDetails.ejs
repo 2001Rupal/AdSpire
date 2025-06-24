@@ -1,0 +1,103 @@
+<!-- views/clubDetails.ejs -->
+<%- layout('layouts/boilerplate') %>
+<!-- 
+<div style="max-width: 800px; margin: 40px auto; padding: 30px; background: #1e1e1e; border-radius: 12px; color: white;">
+  <h2><%= club.name %></h2>
+  <p><strong>Location:</strong> <%= club.location %></p>
+  <p><strong>Segment:</strong> <%= club.segment %></p>
+  <p><strong>Industry:</strong> <%= club.industry %></p>
+  <p><strong>Description:</strong> <%= club.description || 'N/A' %></p>
+  <p><strong>Popularity:</strong> <%= club.popularity || 'N/A' %></p>
+
+  <a href="/explore" style="display: inline-block; margin-top: 20px; color: #b0766b;">← Back to Explore</a>
+  <hr style="margin: 40px 0; border-color: #444;" />
+
+<h3 style="margin-bottom: 15px;">Book this Club</h3>
+<form action="/bookings" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+  <input type="hidden" name="clubId" value="<%= club._id %>">
+
+  <input type="text" name="brandName" placeholder="Brand Name" required class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white">
+  <input type="email" name="email" placeholder="Email" required class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white">
+  <input type="text" name="website" placeholder="Website" class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white">
+  
+  <select name="isAgency" class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white">
+    <option value="">Are you a Brand or Agency?</option>
+    <option value="Brand">Brand</option>
+    <option value="Agency">Agency</option>
+  </select>
+
+  <textarea name="details" placeholder="Booking Details (e.g. dates, inventory needed)" required class="px-4 py-2 rounded bg-gray-800 border border-gray-600 text-white"></textarea>
+
+  <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white w-fit">Send Booking Request</button>
+</form>
+
+</div> -->
+<%- layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+  <h2 class="mb-4"><%= club.name %></h2>
+
+  <!-- Top Row: Club Info + Media -->
+  <div class="row mb-5">
+    <!-- Left: Media Gallery -->
+    <div class="col-md-6">
+      <% if (club.mediaGallery && club.mediaGallery.length) { %>
+        <% club.mediaGallery.forEach(media => { %>
+          <% if (media.endsWith('.mp4')) { %>
+            <video src="<%= media %>" class="w-100 mb-3" controls></video>
+          <% } else { %>
+            <img src="<%= media %>" class="w-100 mb-3 rounded" alt="Media">
+          <% } %>
+        <% }) %>
+      <% } else { %>
+        <div class="bg-light text-center py-5">No Media Available</div>
+      <% } %>
+    </div>
+
+    <!-- Right: Club Info -->
+    <div class="col-md-6">
+      <p><strong>Location:</strong> <%= club.location %></p>
+      <p><strong>Industry:</strong> <%= club.industry %></p>
+      <p><strong>Segment:</strong> <%= club.segment %></p>
+      <p><strong>Reach:</strong> <%= club.reach || 'N/A' %></p>
+      <p><strong>Availability:</strong> <%= club.availability || 'N/A' %></p>
+      <p><strong>Description:</strong><br><%= club.description || 'N/A' %></p>
+    </div>
+  </div>
+
+  <!-- Inventory Section -->
+  <h4 class="mb-3">Inventories</h4>
+  <% if (club.inventories && club.inventories.length) { %>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <% club.inventories.forEach(inv => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm rounded-4">
+            <% if (inv.media && inv.media.endsWith('.mp4')) { %>
+              <video class="card-img-top rounded-top-4" controls>
+                <source src="<%= inv.media %>" type="video/mp4">
+              </video>
+            <% } else if (inv.media) { %>
+              <img src="<%= inv.media %>" class="card-img-top rounded-top-4" alt="<%= inv.name %>">
+            <% } else { %>
+              <div class="bg-light text-center py-4 rounded-top-4">No Media</div>
+            <% } %>
+
+            <div class="card-body">
+              <h5 class="card-title"><%= inv.name %></h5>
+              <p class="mb-1"><strong>Spot:</strong> <%= inv.spot %></p>
+              <p class="mb-1"><strong>Availability:</strong> <%= inv.availability %></p>
+              <p class="mb-1"><strong>Reach:</strong> <%= inv.reach %></p>
+              <p class="mb-1"><strong>Dimensions:</strong> <%= inv.dimensions %></p>
+              <p class="mb-1"><strong>Guidelines:</strong> <%= inv.guidelines %></p>
+              <% if (inv.view360) { %>
+                <a href="<%= inv.view360 %>" target="_blank" class="btn btn-sm btn-outline-primary mt-2">View 360°</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>No inventories available for this club.</p>
+  <% } %>
+</div>

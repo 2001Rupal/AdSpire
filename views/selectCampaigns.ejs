@@ -1,0 +1,243 @@
+<%- layout('layouts/boilerplate') %>
+<%- include('partials/flash') %>
+
+<div class="campaigns-container">
+  <h2>Your Campaigns</h2>
+
+  <% if (campaigns.length === 0) { %>
+    <p class="no-campaigns">No campaigns found. <a href="/campaigns/create" class="create-link">Create one now</a>.</p>
+  <% } else { %>
+    <div class="campaign-grid">
+      <% campaigns.forEach(campaign => { %>
+        <div class="campaign-card">
+          <div class="top-actions">
+          <a href="/campaigns/<%= campaign._id %>/details" class="btn btn-outline" >View Details</a>
+          </div>
+          <h3><%= campaign.name %></h3>
+          <p><strong>Goal:</strong> <%= campaign.goal %></p>
+          <p><strong>Audience:</strong> <%= campaign.targetAudience %></p>
+          <p><strong>Start:</strong> <%= new Date(campaign.startDate).toLocaleDateString() %></p>
+          <p><strong>End:</strong> <%= new Date(campaign.endDate).toLocaleDateString() %></p>
+
+          <div class="card-actions">
+            <a href="/campaigns/<%= campaign._id %>/edit" class="btn btn-secondary">Edit</a>
+            <a href="/campaigns/<%= campaign._id %>/use" class="btn btn-primary">Use This Campaign</a>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+                url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .campaigns-container {
+    padding: 70px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .campaigns-container h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #fff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+  }
+
+  .no-campaigns {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .create-link {
+    color: #ff9966;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .campaign-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+
+  .campaign-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .campaign-card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,153,102,0.3), rgba(255,106,106,0.3));
+    z-index: -1;
+    pointer-events: none; 
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .campaign-card:hover::before {
+    opacity: 0.4;
+  }
+
+  .campaign-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+    color: #ff9966;
+    position: relative;
+    z-index: 1;
+  }
+
+  .campaign-card p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .top-actions {
+position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.top-actions .btn {
+  pointer-events: auto;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+  .btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border-color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(255, 106, 106, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 24px rgba(255, 106, 106, 0.6);
+    border-color: #ff6a6a;
+  }
+
+  .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid #fff;
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.04);
+  }
+
+  .btn-outline {
+    border: 1px solid #ff9966;
+    color: #ff9966;
+    background: transparent;
+  }
+
+  .btn-outline:hover {
+    background-color: rgba(255, 153, 102, 0.2);
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 768px) {
+    .card-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .top-actions {
+    position: static;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  }
+  @media (max-width: 768px) {
+  .campaigns-container {
+    padding: 40px 15px;
+  }
+
+  .campaigns-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .campaign-card {
+    padding: 16px;
+  }
+
+  .campaign-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+
+  .campaign-card p {
+    font-size: 0.95rem;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .top-actions {
+    position: static;
+    text-align: right;
+    margin-bottom: 10px;
+  }
+  .campaign-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+}
+
+</style>

@@ -1,0 +1,630 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="club-detail-wrapper">
+
+  <!-- Hero Banner -->
+  <section class="custom-hero position-relative mb-0">
+    <% if (club.media && club.media.length > 0) { %>
+      <% if (club.media[0].endsWith('.mp4')) { %>
+        <video autoplay muted loop class="w-100 h-100 object-fit-cover rounded-4">
+          <source src="<%= club.media[0] %>" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      <% } else { %>
+        <img src="<%= club.media[0] %>" class="w-100 h-100 object-fit-cover rounded-4" alt="Club Banner" />
+      <% } %>
+    <% } else { %>
+      <img src="/assets/img/default-club.jpg" class="w-100 h-100 object-fit-cover rounded-4" alt="Default Club" />
+    <% } %>
+
+    <!-- Overlay -->
+    <div class="custom-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between px-5 py-4 rounded-4">
+  <div class="d-flex justify-content-end gap-3">
+    <button class="icon-btn" aria-label="View Images"><i class="bi bi-image"></i></button>
+    <button class="icon-btn" aria-label="View Videos"><i class="bi bi-camera-video"></i></button>
+    <!-- 360 View Icon -->
+<% if (club.view360Link) { %>
+  <a href="<%= club.view360Link %>" target="_blank" rel="noopener noreferrer" class="icon-btn text-white text-decoration-none" aria-label="360 View" title="360 View">
+    <i class="bi bi-camera-reels"></i>
+  </a>
+<% } else { %>
+  <div class="icon-btn disabled" aria-disabled="true" title="360 View Not Available">
+    <i class="bi bi-camera-reels"></i>
+  </div>
+<% } %>
+
+<!-- Website Icon -->
+<% 
+  let clubWebsite = club.website || '';
+  if (clubWebsite && !clubWebsite.startsWith('http')) {
+    clubWebsite = 'https://' + clubWebsite;
+  }
+%>
+<% if (clubWebsite) { %>
+  <a href="<%= clubWebsite %>" target="_blank" rel="noopener noreferrer" class="icon-btn text-white text-decoration-none" aria-label="Visit Website" title="Visit Website">
+    <i class="bi bi-globe2"></i>
+  </a>
+<% } else { %>
+  <div class="icon-btn disabled" title="Website Not Available">
+    <i class="bi bi-globe2"></i>
+  </div>
+<% } %>
+
+  </div>
+
+  <!-- Club Info Left | Stats Right -->
+  <div class="d-flex justify-content-between align-items-end flex-wrap mt-auto gap-4 w-100">
+    <!-- Left: Club Name -->
+    <div class="text-white club-name-block">
+      <span class="badge bg-primary px-3 py-2 mb-2 rounded-pill fs-6"><%= club.segment || 'Premium' %></span>
+      <h1 class="fw-bold display-4 mb-1 club-name-left"><%= club.name %></h1>
+      <p class="mb-0 fs-5"><i class="bi bi-geo-alt-fill me-2"></i><%= club.location || 'Location N/A' %></p>
+    </div>
+
+    <!-- Right: Stats -->
+    <div class="stat-box-container">
+      <div class="stat-box text-center">
+        <h5 class="mb-0 fw-bold"><%= club.reach || '10K+' %></h5>
+        <small>Total Footfall</small>
+      </div>
+      <div class="stat-box text-center">
+        <h5 class="mb-0 fw-bold"><%= inventories.length %></h5>
+        <small>Inventories</small>
+      </div>
+      <div class="stat-box text-center">
+        <h5 class="mb-0 fw-bold"><%= club.totalMembers || '900+' %></h5>
+        <small>Members</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </section>
+
+  <!-- Description Section -->
+  <section class="club-description-section py-5">
+    <div class="container">
+      <div class="glass-card p-4 rounded-4">
+        <h4 class="mb-4 fw-semibold text-white">Club Description</h4>
+                <hr class="border-white opacity-25 my-4" />
+
+
+        <div class="mb-5">
+          <h6 class="text-info mb-3">Overview</h6>
+          <p class="text-white-50 fs-5"><%= club.description || "No description available." %></p>
+        </div>
+
+        <hr class="border-white opacity-25 my-4" />
+
+        
+      </div>
+    </div>
+  </section>
+
+  <div class="row gy-4">
+  <% specialEvents.forEach(event => { %>
+    <div class="col-md-6 col-lg-4">
+      <a href="/special-events/<%= event._id %>" class="glass-event-card-link text-decoration-none">
+        <div class="glass-event-card h-100 d-flex flex-column p-3 rounded-4 position-relative">
+          <% if (event.media?.[0]) { %>
+            <img src="<%= event.media[0] %>" class="event-img rounded-3 mb-3" alt="Event Media">
+          <% } %>
+
+          <h5 class="text-info fw-semibold mb-2"><%= event.title %></h5>
+          <hr class="card-divider my-2" />
+
+          <p class="text-white-50 mb-3"><%= event.description?.slice(0, 130) || 'No description' %>...</p>
+
+                    <hr class="card-divider my-2" />
+
+          <div class="mt-auto">
+            <small class="d-block text-light mb-1">
+              <i class="bi bi-calendar-event me-1"></i>
+              <%= new Date(event.date).toDateString() %>
+            </small>
+            <small class="d-block text-light">
+              <i class="bi bi-geo-alt-fill me-1"></i>
+              <%= event.location || 'Location N/A' %>
+            </small>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% }) %>
+</div>
+
+          <hr class="card-divider my-2" />
+
+  <!-- Inventory Section -->
+  <section class="inventory-filter-wrapper py-4">
+   <div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4 gap-3" style="flex-wrap: nowrap;">
+    <h3 class="text-white fw-semibold mb-0">Inventories</h3>
+    <div class="d-flex gap-3 align-items-center" style="flex-wrap: nowrap;">
+      <select class="form-select bg-light bg-opacity-10 text-white border-light" id="filterCategory" aria-label="Filter by category" style="min-width: 130px;">
+        <option value="">Category</option>
+        <option value="Indoor">Indoor</option>
+        <option value="Outdoor">Outdoor</option>
+      </select>
+      <select class="form-select bg-light bg-opacity-10 text-white border-light" id="sortBy" aria-label="Sort inventories" style="min-width: 130px;">
+        <option value="">Sort By</option>
+        <option value="reach">Reach</option>
+        <option value="availability">Availability</option>
+      </select>
+      <span class="badge bg-secondary fs-6">Selected <span id="selectedCount">0</span>/10</span>
+    </div>
+  </div>
+</div>
+
+
+
+      <div class="inventory-card-grid">
+        <% inventories.forEach((item) => { %>
+          <a href="/inventory/<%= item._id %>?campaignId=<%= campaignId || '' %>" class="inventory-card glass-card text-decoration-none" aria-label="View inventory <%= item.name %>">
+            <div class="inventory-img-container position-relative">
+              <img src="<%= item.media?.[0] || '/assets/img/default-inventory.jpg' %>" class="img-fluid w-100 rounded-top-4" alt="Inventory Image" loading="lazy" />
+              <span class="badge badge-top-left bg-warning text-dark"><%= item.availability || 'Available' %></span>
+            </div>
+            <div class="p-3">
+              <hr class="card-divider my-2" />
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="fw-semibold text-warning mb-0"><%= item.name %></h5>
+              <span class="badge bg-info text-dark ms-2"><%= item.reach || '5K+' %> Reach</span>
+            </div>
+                        <hr class="card-divider my-2" />
+
+              <p class="text-white-50 small mb-0"><%= item.description ? item.description.slice(0, 100) : 'No description' %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  /* Reset and base */
+  body {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+      url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+select.form-select {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+select.form-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+select.form-select option {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+select.form-select:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+}
+  .club-detail-wrapper {
+    max-width: 1200px;
+    margin: 70px auto 50px;
+    padding: 0 20px;
+  }
+
+  /* Glass Card Style */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.5));
+  margin: 1rem 0;
+  opacity: 0.9;
+}
+
+  .glass-card:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+.glass-event-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.event-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+  /* Glowing border on hover */
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 153, 102, 0.3), rgba(255, 106, 106, 0.3));
+    z-index: 0;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .glass-card:hover::before {
+    opacity: 0.4;
+  }
+
+  /* Hero Banner */
+  .custom-hero {
+    width: 100vw;
+    max-height: 600px;
+    min-height: 500px;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    z-index: 1;
+    margin-top: -4.5rem;
+  }
+
+  .custom-hero img,
+  .custom-hero video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+  }
+
+  .custom-hero-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.3));
+    color: white;
+    padding: 2rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0 0 18px 18px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+    z-index: 10;
+  }
+
+  /* Icon buttons style */
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    transition: background 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+  }
+
+  .icon-btn:hover,
+  .icon-btn:focus {
+    background-color: rgba(255, 255, 255, 0.35);
+    outline: none;
+  }
+.club-name-left {
+  text-align: left;
+
+
+  /* You can also add width or max-width if needed */
+}
+
+.club-name-block {
+  text-align: left;
+  flex: 1 1 60%;
+  margin-left: 2rem;
+  margin-bottom: 4rem;
+}
+.stat-box-container {
+  flex: 1 1 35%; /* 35% width le right me */
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+ 
+}
+  /* Badge positioning */
+  .badge-top-left {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 0.25em 0.6em;
+    font-size: 0.75rem;
+    border-radius: 14px;
+    font-weight: 600;
+  }
+
+  .badge-bottom-right {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 0.25em 0.6em;
+    font-size: 0.75rem;
+    border-radius: 14px;
+    font-weight: 600;
+  }
+
+  .stat-box{
+     background-color: #75747467;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  min-width: 110px;
+  color: #f0f0f0;
+  box-shadow: inset 0 0 5px rgba(255,255,255,0.05);
+  text-align: center;
+  }
+  /* Stats boxes */
+  .stat-box h5 {
+    font-size: 1.25rem;
+  }
+
+  /* Inventory Section */
+  .inventory-filter-wrapper {
+    max-width: 100%;
+  }
+
+  .inventory-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .inventory-card {
+    display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 0;     
+  }
+
+  .inventory-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(255, 140, 0, 0.5);
+  }
+
+  .inventory-img-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .inventory-img-container img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .inventory-card h5 {
+    color: #ffa726; /* Orange shade */
+    margin-bottom: 0.5rem;
+  }
+
+  .inventory-card p {
+    font-size: 0.9rem;
+    color: #ddd;
+  }
+  .inventory-card > div.p-3 {
+  padding: 16px 20px;      /* Padding only for content area */
+}
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .custom-hero-overlay {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+    .stat-box {
+      flex: 1 1 33%;
+      text-align: center;
+    }
+  }
+  @media (max-width: 768px) {
+  .club-name-block {
+    margin-left: 0;
+    margin-bottom: 2rem;
+  }
+
+  .stat-box-container {
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+
+  .custom-hero {
+    min-height: 300px;
+    aspect-ratio: auto;
+  }
+
+  .event-img {
+    height: 160px;
+  }
+
+  .inventory-img-container img {
+    height: 150px;
+  }
+
+  .inventory-card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+
+  .inventory-card > div.p-3 {
+    padding: 1rem;
+  }
+
+  .d-flex.justify-content-between.align-items-center.mb-4.gap-3 {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .d-flex.gap-3.align-items-center {
+    flex-wrap: wrap !important;
+    width: 100%;
+  }
+
+  select.form-select {
+    width: 100%;
+  }
+
+  .glass-card,
+  .glass-event-card {
+    padding: 1rem;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .club-name-left {
+    font-size: 1.75rem;
+  }
+
+  .club-name-block p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-hero {
+    min-height: 220px;
+    padding: 0.75rem 1rem;
+
+  }
+
+  .club-name-left {
+    font-size: 1.25rem;
+  }
+
+  .stat-box h5 {
+    font-size: 0.95rem;
+  }
+
+  .stat-box small {
+    font-size: 0.7rem;
+  }
+
+  .glass-card,
+  .glass-event-card {
+    padding: 0.75rem;
+  }
+
+  .inventory-img-container img {
+    height: 130px;
+  }
+
+  .event-img {
+    height: 140px;
+  }
+
+  .badge-top-left {
+    font-size: 0.65rem;
+    padding: 0.2em 0.5em;
+  }
+}
+@media (max-width: 768px) {
+  .club-name-block .badge.bg-primary {
+    display: none;
+  }
+
+  .custom-hero-overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+  }
+
+  .custom-hero-overlay .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .club-name-block, .stat-box-container {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  .stat-box-container {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .stat-box {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .custom-hero {
+    display: none !important;
+  }
+}
+
+</style>

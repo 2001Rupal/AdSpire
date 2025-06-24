@@ -1,0 +1,133 @@
+<%- layout('layouts/boilerplate') %>
+
+  <%- include('partials/flash') %>
+
+<section class="dashboard-container py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 display-6 text-white fw-bold">Welcome to Your Dashboard</h2>
+
+    <div class="row g-4 justify-content-center">
+      <% const cards = [
+        { icon: 'fa-bullhorn', color: 'warning', title: 'Create Campaign', link: '/campaigns/create', label: 'Start Now' },
+        { icon: 'fa-folder-open', color: 'info', title: 'Select Campaign', link: '/campaigns/select', label: 'Browse' },
+        { icon: 'fa-users', color: 'success', title: 'Invite Users', link: '/invite', label: 'Invite' },
+        { icon: 'fa-rocket', color: 'danger', title: 'Explore Clubs', link: '/explore', label: 'Explore' },
+        { icon: 'fa-comment-dots', color: 'light', title: 'Talk to AdSpire', link: '/enquiry', label: 'Contact' },
+        { icon: 'fa-user-circle', color: 'primary', title: 'Your Profile', link: '/profile', label: 'View' }
+
+      ]; %>
+
+      <% cards.forEach((card, index) => { %>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="dashboard-card text-center p-4 rounded-4" >
+            <div class="icon-circle bg-<%= card.color %> mb-3 mx-auto">
+              <i class="fas <%= card.icon %> fa-lg text-dark"></i>
+            </div>
+            <h5 class="fw-semibold mb-3 text-white"><%= card.title %></h5>
+            <a href="<%= card.link %>" class="btn btn-outline-light rounded-pill px-4 py-2"><%= card.label %></a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background: linear-gradient(to right, rgba(12,12,12,0.2), rgba(12,12,12,0.7)), url('/uploads/clubs/1746288248790-791790165.jpg') center/cover no-repeat;
+
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    
+    
+  }
+
+  
+
+  .dashboard-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+    animation: fadeUp 0.7s ease forwards;
+    opacity: 0;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.08), 0 20px 40px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.25);
+        opacity: 0.7;
+
+  }
+
+  .icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .icon-circle i {
+    transition: transform 0.3s, color 0.3s;
+  }
+
+  .dashboard-card:hover .icon-circle i {
+    transform: scale(1.2);
+    color: #000;
+  }
+
+  .dashboard-card h5 {
+    font-size: 1.35rem;
+    letter-spacing: 0.6px;
+  }
+
+  .dashboard-card .btn {
+    margin-top: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.95rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dashboard-card .btn:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
+  @keyframes fadeUp {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .dashboard-card {
+      padding: 2rem 1.2rem;
+    }
+
+    .dashboard-card h5 {
+      font-size: 1.15rem;
+    }
+
+    .dashboard-card .btn {
+      padding: 0.45rem 1.2rem;
+    }
+  }
+</style>

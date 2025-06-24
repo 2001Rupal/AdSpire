@@ -1,0 +1,178 @@
+<header class="aspire-header">
+  <div class="header-content container d-flex justify-content-between align-items-center">
+    
+    <!-- Logo + Hamburger Group -->
+    <div class="left-header d-flex align-items-center gap-3">
+      <!-- Hamburger Icon (left) -->
+      <button class="menu-toggle d-md-none" onclick="toggleMenu()" aria-label="Toggle menu">
+        <i id="menuIcon" class="bi bi-list"></i>
+      </button>
+
+      <!-- Logo -->
+      <a href="/" class="brand-name">AdSpire</a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav id="navMenu" class="nav-links">
+      <a href="/" class="<%= currentRoute === '/' ? 'active' : '' %>">Home</a>
+      <a href="/about" class="<%= currentRoute === '/about' ? 'active' : '' %>">About Us</a>
+      <a href="/enquiry" class="<%= currentRoute === '/enquiry' ? 'active' : '' %>">Contact</a>
+      <% if (user) { %>
+        <a href="/dashboard" class="<%= currentRoute === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/logout">Logout</a>
+      <% } else if (!['/login', '/verify-otp'].includes(currentRoute)) { %>
+        <a href="/login" class="<%= currentRoute === '/login' ? 'active' : '' %>">Login</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+
+
+
+<style>
+  /* HEADER BASE */
+.aspire-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(18, 18, 18, 0.65);
+  backdrop-filter: blur(16px);
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ff5722;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.brand-name:hover {
+  color: #ff5722;
+  text-shadow: 0 0 11px rgba(255, 153, 102, 0.2);
+  text-decoration: none;
+}
+
+.nav-links a {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #eeeeee;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  display: inline-block;
+}
+
+.nav-links a:hover {
+  background: rgba(255, 106, 106, 0.2);
+}
+
+.nav-links a.active {
+  color: #ff5722;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ff5722;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255, 138, 138, 0.5);
+}
+
+/* DESKTOP */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* MOBILE */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 10px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+.left-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 1.4rem;
+  }
+
+  .menu-toggle {
+    font-size: 1.2rem;
+  
+  }
+}
+@media (max-width: 768px) {
+  .nav-links a {
+    font-size: 0.95rem;
+    padding: 6px 12px;
+  }
+}
+
+</style>
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById('navMenu');
+    const icon = document.getElementById('menuIcon');
+
+    nav.classList.toggle('show');
+
+    icon.classList.toggle('bi-list');
+    icon.classList.toggle('bi-x');
+  }
+</script>

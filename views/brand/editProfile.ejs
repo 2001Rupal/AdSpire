@@ -1,0 +1,154 @@
+<%- layout('layouts/boilerplate') %>
+
+<section id="brand-edit-profile" class="d-flex justify-content-center align-items-center min-vh-100 px-3">
+  <div class="profile-wrapper p-4 rounded-5 shadow-lg w-100" style="max-width: 950px;">
+    <h1 class="text-center mb-5 display-5 fw-bold text-gradient">Edit Brand Profile</h1>
+
+    <form action="/profile/edit" method="POST">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <label class="form-label text-accent">Brand Name</label>
+          <input type="text" name="brandName" class="form-control" value="<%= user.brandName %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">User Name</label>
+          <input type="text" name="userName" class="form-control" value="<%= user.userName %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Designation</label>
+          <input type="text" name="designation" class="form-control" value="<%= user.designation %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Industry</label>
+          <input type="text" name="industry" class="form-control" value="<%= user.industry %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">City</label>
+          <input type="text" name="city" class="form-control" value="<%= user.city %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">State</label>
+          <input type="text" name="state" class="form-control" value="<%= user.state %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Website</label>
+          <input type="url" name="website" class="form-control" value="<%= user.website %>">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Email</label>
+          <input type="email" name="email" class="form-control" value="<%= user.email %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Contact Number</label>
+          <input type="text" name="contactNumber" class="form-control" value="<%= user.contactNumber %>" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-accent">Pincode</label>
+          <input type="text" name="pincode" class="form-control" value="<%= user.pincode %>" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label text-accent">Address</label>
+          <textarea name="address" class="form-control" rows="2" required><%= user.address %></textarea>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4 px-5 py-2 fs-5 fw-semibold shadow-sm">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  body {
+background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;    font-family: 'Poppins', sans-serif;
+    color: #fff;    
+    font-family: 'Poppins', sans-serif;
+   
+  }
+
+  .profile-wrapper {
+    background: rgba(30, 30, 30, 0.65);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    margin-top: 3rem;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-accent {
+    color: #ff8080;
+    font-weight: 500;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .form-control:focus {
+    border-color: #ff8080;
+    box-shadow: 0 0 0 0.2rem rgba(255, 128, 128, 0.25);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    box-shadow: 0 8px 28px rgba(255, 106, 106, 0.4);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 44px rgba(255, 106, 106, 0.65);
+  }
+  @media (max-width: 768px) {
+  .profile-wrapper {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+
+  #brand-edit-profile h1.display-5 {
+    font-size: 1.7rem;
+    line-height: 1.3;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    margin-top: 1.5rem;
+  }
+
+  .text-center {
+    text-align: center !important;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+  }
+}
+
+</style>

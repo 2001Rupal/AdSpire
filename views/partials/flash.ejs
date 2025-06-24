@@ -1,0 +1,80 @@
+<% if (successMsg && successMsg.length > 0) { %>
+  <div class="custom-flash flash-success">
+    <span class="close-flash">&times;</span>
+    <%= successMsg %>
+  </div>
+<% } %>
+<% if (errorMsg && errorMsg.length > 0) { %>
+  <div class="custom-flash flash-error">
+    <span class="close-flash">&times;</span>
+    <%= errorMsg %>
+  </div>
+<% } %>
+
+
+
+<style>
+    .custom-flash {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 20px 30px;
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  font-weight: 500;
+  font-size: 1rem;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+animation: fadeOut 0.5s ease-out 7s forwards;
+position: fixed;
+}
+
+.flash-success {
+  background: linear-gradient(135deg, #28a745, #60d394);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.flash-error {
+  background: linear-gradient(135deg, #dc3545, #ff6a6a);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+.close-flash {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    visibility: hidden;
+  }
+}
+@media (max-width: 768px) {
+  .custom-flash {
+    width: 90%;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    max-width: 95%;
+  }
+}
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const closeBtns = document.querySelectorAll(".close-flash");
+    closeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.parentElement.style.display = "none";
+      });
+    });
+  });
+</script>

@@ -1,0 +1,118 @@
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-top">
+      <p class="footer-text">&copy; 2025 <strong>AdSpire</strong>. All rights reserved.</p>
+
+      
+    </div>
+
+    <div class="social-icons">
+      <a href="https://www.facebook.com" target="_blank" class="social-icon">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" class="social-icon">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" class="social-icon">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 36px 20px;
+    margin-top: 100px;
+    text-align: center;
+    color: #e0e0e0;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-size: 0.95rem;
+    color: #bbb;
+  }
+
+  .footer-nav {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+
+  .footer-nav li a {
+    text-decoration: none;
+    color: #aaa;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+
+  .footer-nav li a:hover {
+    color: #ff5722;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 10px;
+  }
+
+  .social-icon {
+    font-size: 1.3rem;
+    color: #bbb;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 10px;
+  }
+
+  .social-icon:hover {
+    color: #fff;
+    background: radial-gradient(circle at center, rgba(255, 87, 34, 0.6), transparent 60%);
+    transform: scale(1.25);
+  }
+
+  @media (max-width: 600px) {
+    .footer-text {
+      font-size: 0.85rem;
+    }
+
+    .footer-nav {
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .footer-nav li a {
+      font-size: 0.8rem;
+    }
+
+    .social-icon {
+      font-size: 1.1rem;
+    }
+  }
+</style>

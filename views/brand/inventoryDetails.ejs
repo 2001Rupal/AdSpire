@@ -1,0 +1,656 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="club-detail-container py-5">
+  <div class="container">
+
+  
+   <!-- Hero Banner -->
+    <!-- Hero Banner -->
+<section class="custom-hero position-relative mb-0">
+  <% if (club.media && club.media.length > 0) { %>
+    <% if (club.media[0].endsWith('.mp4')) { %>
+      <video autoplay muted loop class="w-100 h-100 object-fit-cover rounded-4">
+        <source src="<%= club.media[0] %>" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    <% } else { %>
+      <img src="<%= club.media[0] %>" class="w-100 h-100 object-fit-cover rounded-4" alt="Club Banner" />
+    <% } %>
+  <% } else { %>
+    <img src="/assets/img/default-club.jpg" class="w-100 h-100 object-fit-cover rounded-4" alt="Default Club" />
+  <% } %>
+
+  <!-- Overlay -->
+  <div class="custom-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between px-5 py-4 rounded-4">
+    <div class="d-flex justify-content-end gap-3">
+      <button class="icon-btn" aria-label="View Images"><i class="bi bi-image"></i></button>
+      <button class="icon-btn" aria-label="View Videos"><i class="bi bi-camera-video"></i></button>
+
+      <% if (club.view360Link) { %>
+        <a href="<%= club.view360Link %>" target="_blank" rel="noopener noreferrer" class="icon-btn text-white text-decoration-none" aria-label="360 View" title="360 View">
+          <i class="bi bi-camera-reels"></i>
+        </a>
+      <% } else { %>
+        <div class="icon-btn disabled" aria-disabled="true" title="360 View Not Available">
+          <i class="bi bi-camera-reels"></i>
+        </div>
+      <% } %>
+
+      <% 
+        let clubWebsite = club.website || '';
+        if (clubWebsite && !clubWebsite.startsWith('http')) {
+          clubWebsite = 'https://' + clubWebsite;
+        }
+      %>
+      <% if (clubWebsite) { %>
+        <a href="<%= clubWebsite %>" target="_blank" rel="noopener noreferrer" class="icon-btn text-white text-decoration-none" aria-label="Visit Website" title="Visit Website">
+          <i class="bi bi-globe2"></i>
+        </a>
+      <% } else { %>
+        <div class="icon-btn disabled" title="Website Not Available">
+          <i class="bi bi-globe2"></i>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Bottom Section: Left Info + Right Stats -->
+    <div class="d-flex justify-content-between align-items-end flex-wrap mt-auto gap-4 w-100">
+      <!-- Left: Club Info -->
+      <div class="text-white club-name-block">
+        <span class="badge bg-primary px-3 py-2 mb-2 rounded-pill fs-6"><%= club.segment || 'Premium' %></span>
+        <h1 class="fw-bold display-4 mb-1 club-name-left"><%= club.name %></h1>
+        <p class="mb-0 fs-5"><i class="bi bi-geo-alt-fill me-2"></i><%= club.location || 'Location N/A' %></p>
+      </div>
+
+      <!-- Right: Stats -->
+      <div class="stat-box-container">
+        <div class="stat-box text-center">
+          <h5 class="mb-0 fw-bold"><%= club.reach || '10K+' %></h5>
+          <small>Total Footfall</small>
+        </div>
+        <div class="stat-box text-center">
+          <h5 class="mb-0 fw-bold"><%= inventory.subInventories.length %></h5>
+          <small>Inventories</small>
+        </div>
+        <div class="stat-box text-center">
+          <h5 class="mb-0 fw-bold"><%= club.totalMembers || '900+' %></h5>
+          <small>Members</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="card-divider my-10" />
+
+
+    <!-- Inventory Selection -->
+    <div class="inventory-glass-box p-4">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-white mb-0"><%= inventory.name %></h3>
+        <div class="form-check text-white m-0">
+          <input type="checkbox" class="form-check-input" id="selectAllCheckbox" />
+          <label class="form-check-label fw-semibold mb-0" for="selectAllCheckbox">Select All</label>
+        </div>
+      </div>
+
+      <div class="row g-3">
+  <% inventory.subInventories.forEach((item, index) => { %>
+    <div class="col-12 col-md-6">
+      <label class="form-check-custom bg-glass text-white" for="sub_<%= index %>">
+        <input
+          class="form-check-input sub-inventory-checkbox"
+          type="checkbox"
+          name="subInventories"
+          id="sub_<%= index %>"
+          value="<%= item.name %>"
+          <%= selectedSubInventories.includes(item.name) ? 'checked' : '' %>
+        />
+        <span class="form-check-label fw-semibold"><%= item.name %></span>
+      </label>
+    </div>
+  <% }); %>
+</div>
+
+<hr class="card-divider my-4" />
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap mt-4 gap-3">
+        <div>
+<p class="text-white mb-1">Campaign: <strong><%= campaign && campaign.name ? campaign.name : 'None' %></strong></p>
+          <p class="text-white mb-0">Selected: <span id="selectedCount"><%= selectedSubInventories.length %></span></p>
+        </div>
+        <button id="addToCartBtn" class="btn btn-danger px-4 py-2">Add to Cart</button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+  console.log("Script loaded")
+  const checkboxes = document.querySelectorAll('.sub-inventory-checkbox');
+  const selectAll = document.getElementById('selectAllCheckbox');
+  const selectedCount = document.getElementById('selectedCount');
+  const addToCartBtn = document.getElementById('addToCartBtn');
+
+  function updateCount() {
+    const count = [...checkboxes].filter(cb => cb.checked && cb.id !== 'selectAllCheckbox').length;
+    selectedCount.textContent = count;
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener('change', updateCount));
+
+  selectAll.addEventListener('change', () => {
+    const checked = selectAll.checked;
+    checkboxes.forEach(cb => {
+      if (cb.id !== 'selectAllCheckbox') cb.checked = checked;
+    });
+    updateCount();
+  });
+
+  updateCount(); // initial call
+
+  addToCartBtn.addEventListener('click', async () => {
+    const campaignId = "<%= campaignId %>";
+    if (!campaignId) {
+      alert("Please select a campaign before adding inventory to cart.");
+      window.location.href = "/dashboard"; // or redirect to campaign selection page
+      return;
+    }
+  
+    const selected = [...checkboxes]
+      .filter(cb => cb.checked && cb.id !== 'selectAllCheckbox')
+      .map(cb => cb.value);
+
+    console.log("Selected Inventories:", selected);
+
+    if (!selected.length) {
+      alert('Please select at least one inventory.');
+      return;
+    }
+
+    addToCartBtn.disabled=true;
+    addToCartBtn.textContent='Adding...';
+    try{
+      const response = await fetch('/add-to-cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          campaignId: "<%= campaignId %>",
+          inventoryId: "<%= inventory._id %>",
+          selectedSubInventories: selected
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert('Inventories added to cart!');
+        window.location.href = `/add-to-cart?campaignId=<%= campaignId %>`;
+      } else {
+        alert(result.error || 'Something went wrong.');
+      }
+
+      console.log("Server response:", result);
+
+    } catch(err) {
+      console.log(err);
+      alert("network error. Please try again.");
+    } finally {
+      // Re-enable button and reset text
+      addToCartBtn.disabled = false;
+      addToCartBtn.textContent = 'Add to Cart';
+    }
+  });
+</script>
+
+
+<style>
+  /* Body */
+  :root {
+  --accent-color: #c46b6b;
+  --hover-accent: #a84646;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --hero-radius: 18px;
+}
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.custom-hero {
+  width: 100vw;
+  max-height: 600px;
+  min-height: 500px;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  z-index: 1;
+  margin-top: -4rem;
+}
+
+.custom-hero img,
+.custom-hero video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+}
+
+.custom-hero-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.3));
+  color: white;
+  padding: 2rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0 0 18px 18px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+  z-index: 10;
+}
+
+.stat-box-container {
+  flex: 1 1 35%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.stat-box {
+  background-color: #75747467;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  min-width: 110px;
+  color: #f0f0f0;
+  box-shadow: inset 0 0 5px rgba(255,255,255,0.05);
+  text-align: center;
+}
+
+.club-name-block {
+  text-align: left;
+  flex: 1 1 60%;
+  margin-left: 2rem;
+  margin-bottom: 4rem;
+}
+
+
+/* Hero Banner */
+.hero-banner {
+  aspect-ratio: 16 / 7;
+  max-height: 600px;
+  min-height: 500px;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  transition: transform 0.3s ease;
+  margin-top: -3rem;
+}
+.hero-banner:hover {
+  transform: scale(1.05);
+}
+
+.hero-banner img,
+.hero-banner video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  transition: transform 0.5s ease;
+}
+.hero-banner:hover img,
+.hero-banner:hover video {
+  transform: scale(1.1);
+}
+
+/* Overlay */
+.hero-overlay {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.9));
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+/* Icon Buttons */
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 1.25rem;
+  user-select: none;
+}
+.icon-btn:hover {
+  background: rgba(255,255,255,0.3);
+  color: #ffc4c4;
+  transform: scale(1.15);
+}
+
+/* Stats */
+.stat-glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  padding: 12px 22px;
+  border-radius: 1rem;
+  min-width: 120px;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+.stat-glass:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Inventory Glass Box */
+.inventory-glass-box {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2rem 2.5rem;
+  margin-top: 2rem;
+  transition: box-shadow 0.3s ease;
+}
+.inventory-glass-box:hover {
+  box-shadow: 0 20px 60px rgba(164, 102, 102, 0.4);
+}
+
+/* Inventory Title */
+.inventory-glass-box h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Checkboxes */
+.form-check-input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+.form-check-input:checked {
+  background-color: #c46b6b;
+  border-color: #c46b6b;
+}
+.form-check-input:checked::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.form-check-input:hover {
+  border-color: #ffc4c4;
+}
+
+.form-check-input:hover {
+  background-color: #c46b6b;
+  border-color: #c46b6b;
+}
+.form-check-label {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.95);
+  user-select: none;
+  margin: 0;
+}
+/* Checkbox Container */
+.form-check-custom {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+.form-check-custom:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Add to Cart Button */
+#addToCartBtn {
+  background-color: #c46b6b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 0.65rem 2.5rem;
+  box-shadow: 0 4px 15px rgba(196, 107, 107, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+#addToCartBtn:hover {
+  background-color: #a84646;
+  box-shadow: 0 6px 20px rgba(168, 70, 70, 0.8);
+  transform: translateY(-2px);
+}
+
+/* Texts */
+.text-white {
+  color: rgba(255, 255, 255, 0.95) !important;
+  user-select: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .hero-overlay {
+    padding: 1rem 1.25rem;
+  }
+  .stat-glass {
+    min-width: auto;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+  .inventory-glass-box {
+    padding: 1.5rem 1.8rem;
+  }
+  .form-check-label {
+    font-size: 1rem;
+  }
+  #addToCartBtn {
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+  }
+}
+
+/* Glassy background for checkbox container */
+.bg-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.bg-glass:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.5)
+  );
+  margin: 1.5rem 0;
+  opacity: 0.85;
+}
+@media (max-width: 768px) {
+  .custom-hero {
+     width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    left: auto;
+    right: auto;
+  }
+
+  .custom-hero-overlay {
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .club-name-block {
+    margin-left: 0;
+    text-align: left;
+    flex: 1 1 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .club-name-block h1 {
+    font-size: 1.8rem;
+  }
+
+  .club-name-block p {
+    font-size: 1rem;
+  }
+
+  .stat-box-container {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-box {
+    padding: 0.6rem 1rem;
+    min-width: 90px;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+
+  .inventory-glass-box {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .inventory-glass-box h3 {
+    font-size: 1.5rem;
+  }
+
+  .form-check-label {
+    font-size: 0.95rem;
+  }
+
+  .form-check-input {
+    width: 18px;
+    height: 18px;
+  }
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  #addToCartBtn {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    width: 100%;
+  }
+
+  .d-flex.justify-content-between.align-items-center.flex-wrap.mt-4.gap-3 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-name-block h1 {
+    font-size: 1.5rem;
+  }
+
+  .club-name-block p {
+    font-size: 0.95rem;
+  }
+
+  .stat-box h5 {
+    font-size: 1rem;
+  }
+
+  .stat-box small {
+    font-size: 0.8rem;
+  }
+
+  .inventory-glass-box {
+    padding: 1rem;
+  }
+
+  .form-check-custom {
+    padding: 0.65rem 0.85rem;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+
+  .form-check-input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .custom-hero-overlay {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+</style>

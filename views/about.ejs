@@ -1,0 +1,170 @@
+<%- layout('layouts/boilerplate') %>
+<%- include('partials/flash') %>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to right, rgba(12, 12, 12, 0.4), rgba(12, 12, 12, 0.6)),
+                url('/uploads/clubs/pexels-rdne-7551729.jpg') center/cover no-repeat;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about-container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    width: 90%;
+  }
+
+  .about-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #ff5555, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+  }
+
+  .about-container h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .about-container p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  input,
+  textarea {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #ff5555;
+    outline: none;
+  }
+
+  button {
+    background: linear-gradient(90deg, #ff5555, #ff9966);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px #ff6666, 0 0 24px #ff9966;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .about-container {
+      padding: 1.5rem;
+    }
+
+    .about-container h1 {
+      font-size: 1.8rem;
+    }
+
+    .about-container h2 {
+      font-size: 1.3rem;
+    }
+
+    .about-container p {
+      font-size: 0.95rem;
+    }
+
+    button {
+      padding: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-container {
+      padding: 1rem;
+      margin: 1rem auto;
+    }
+
+    .about-container h1 {
+      font-size: 1.6rem;
+    }
+
+    .about-container h2 {
+      font-size: 1.2rem;
+    }
+
+    .about-container p {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<section class="about-container">
+  <h1>About AdSpire</h1>
+  <p>
+    AdSpire is redefining how brands connect with the nightlife ecosystem.
+    We streamline collaborations between top clubs and marketing teams through an intelligent platform
+    that simplifies bookings, tracks campaign performance, and creates meaningful brand experiences.
+  </p>
+  <p>
+    Whether you're launching a product, hosting an event, or targeting a specific audience,
+    AdSpire gives you the tools and insights to make smarter decisions — faster.
+  </p>
+
+  <h2>Get in Touch</h2>
+
+  <% if (successMsg && successMsg.length) { %>
+    <div id="flash-message" style="background: #1a1a1a; color: #00ff9f; padding: 12px 24px; margin-bottom: 20px; border-left: 4px solid #00ff9f; border-radius: 8px;">
+      <%= successMsg %>
+    </div>
+    <script>
+      setTimeout(() => {
+        const flash = document.getElementById('flash-message');
+        if (flash) {
+          flash.style.transition = 'opacity 0.5s ease';
+          flash.style.opacity = '0';
+          setTimeout(() => flash.remove(), 500);
+        }
+      }, 2000);
+    </script>
+  <% } %>
+
+  <form action="/contact" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" placeholder="Your Message..." rows="5" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>

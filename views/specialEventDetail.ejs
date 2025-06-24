@@ -1,0 +1,307 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="event-container">
+  <!-- Left Content -->
+  <div class="event-left">
+    <h1><%= event.title %></h1>
+  <hr class="card-divider" />
+
+    <div class="event-meta">
+      <p><i class="fas fa-calendar-alt"></i> <strong>Date:</strong> <%= new Date(event.date).toDateString() %></p>
+      <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> <%= event.location %></p>
+    </div>
+    <hr class="card-divider" />
+
+    <section class="event-description">
+      <h2>Description</h2>
+      <p><%= event.description %></p>
+    </section>
+    <hr class="card-divider" />
+
+
+    <form method="POST" action="/brand/special-events/<%= event._id %>/interested">
+      <textarea name="message" rows="4" placeholder="Want to know more? Write your thought here......"></textarea>
+      
+      <button type="submit">We Are Interested</button>
+    </form>
+    
+  </div>
+
+  <!-- Right Media -->
+  <div class="event-right">
+    <% 
+      const videoExtensions = ['mp4', 'webm', 'ogg'];
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'avif', 'webp'];
+      let mediaArray = Array.isArray(event.media) ? event.media : [event.media];
+
+      mediaArray.forEach(function(mediaUrl) {
+        if(typeof mediaUrl === 'string') {
+          const ext = mediaUrl.toLowerCase().split('.').pop();
+
+          if(videoExtensions.includes(ext)) { %>
+            <video class="event-media" onclick="openMediaModal(this)" muted loop>
+              <source src="<%= mediaUrl %>" type="video/<%= ext %>">
+              Your browser does not support the video tag.
+            </video>
+          <% } else if(imageExtensions.includes(ext)) { %>
+            <img src="<%= mediaUrl %>" alt="Event Media" class="event-media" onclick="openMediaModal(this)" />
+          <% } 
+        }
+      });
+    %>
+  </div>
+</div>
+
+<!-- Modal for Enlarged Media -->
+<div id="mediaModal" class="media-modal" onclick="closeMediaModal()">
+  <span class="media-close" onclick="closeMediaModal(event)">&times;</span>
+  <div class="media-content" id="mediaContent"></div>
+</div>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.5)), url('/uploads/clubs/1746288248790-791790165.jpg') center/cover no-repeat fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+  .event-meta i{
+    color: #ffae42;
+    margin-right: 6px;
+  }
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.5));
+  margin: 1.5rem 0;
+  opacity: 0.9;
+}
+
+  .event-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    align-items: flex-start;
+  }
+
+  .event-left, .event-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event-left h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 0.4em;
+    color: #ff6a6a;
+  }
+
+  .event-meta p {
+    color: #ccc;
+    margin: 5px 0;
+  }
+
+  .event-description h2 {
+    font-size: 1.3rem;
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+
+  .event-description p {
+    line-height: 1.7;
+    color: #ddd;
+  }
+
+
+textarea {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 23px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  font-size: 1rem;
+  resize: vertical;
+  transition: all 0.3s;
+}
+
+  textarea:focus {
+  border-color: #00bfff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+  
+button {
+  margin-top: 15px;
+  padding: 12px 30px;
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 16px rgba(255, 106, 106, 0.4);
+}
+
+button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 22px rgba(0, 191, 255, 0.5);
+}
+
+  .event-right {
+    gap: 20px;
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+
+  .event-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .event-media:hover {
+    transform: scale(1.02);
+  }
+
+
+  .media-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.media-modal.active {
+  display: flex;
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+  .media-content {
+     max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  }
+
+  .media-content img,
+  .media-content video {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 15px;
+    transition: transfrom 0.3s;
+    object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+
+  }
+
+  .media-close {
+     position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10000;
+  transition: color 0.2s ease;
+  }
+
+  .media-close:hover {
+  color: #ccc;
+}
+  @media(max-width: 768px) {
+    .event-container {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+  }
+  /* Scrollbar styling for modern browsers (Chrome, Edge, Safari) */
+.event-right::-webkit-scrollbar {
+  width: 10px;
+}
+
+.event-right::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); 
+  border-radius: 10px;
+}
+
+.event-right::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff6a6a, #ff9966);
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.event-right::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff9966, #ff6a6a);
+}
+
+/* Firefox scrollbar styling */
+.event-right {
+  scrollbar-width: thin;
+  scrollbar-color: #ff6a6a rgba(255, 255, 255, 0.05);
+}
+
+</style>
+
+<script>
+  function openMediaModal(mediaEl) {
+    const modal = document.getElementById('mediaModal');
+    const content = document.getElementById('mediaContent');
+    content.innerHTML = '';
+
+    let clone;
+    if (mediaEl.tagName === 'VIDEO') {
+      clone = mediaEl.cloneNode(true);
+      clone.controls = true;
+      clone.autoplay = true;
+      clone.loop = true;
+      clone.muted=true;
+    } else {
+      clone = new Image();
+      clone.src = mediaEl.src;
+      clone.alt = mediaEl.alt || 'Media';
+    }
+
+    content.appendChild(clone);
+    modal.classList.add('active');
+  }
+
+  function closeMediaModal(e) {
+    if(e) e.stopPropagation();
+    const modal = document.getElementById('mediaModal');
+
+    const video=modal.querySelector('video');
+    if(video){
+      video.pause();
+    }
+    modal.classList.remove('active');
+  }
+</script>

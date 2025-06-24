@@ -1,0 +1,303 @@
+<%- layout('layouts/boilerplate') %>
+
+<section id="edit-campaign">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-wrapper p-4 rounded-4 shadow-lg w-100" style="max-width: 950px;">
+      <h2 class="text-center mb-4">Edit Campaign</h2>
+
+      <form action="/campaigns/<%= campaign._id %>/edit" method="POST" class="row g-4 needs-validation" novalidate>
+
+        <!-- Campaign Name -->
+        <div class="col-md-6">
+          <label>Brand / Campaign Name*</label>
+          <input type="text" class="form-control" name="name" required placeholder="Enter Campaign Name" value="<%= campaign.name %>">
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-6">
+  <label>Gender*</label>
+  <div class="gender-group">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Male" <%= campaign.gender === 'Male' ? 'checked' : '' %> >
+      <label class="form-check-label">Male</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Female" <%= campaign.gender === 'Female' ? 'checked' : '' %> >
+      <label class="form-check-label">Female</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Both" <%= campaign.gender === 'Both' ? 'checked' : '' %> >
+      <label class="form-check-label">Both</label>
+    </div>
+  </div>
+</div>
+
+        <!-- Start Date -->
+        <div class="col-md-6">
+          <label>Start Date*</label>
+          <input type="date" class="form-control" name="startDate" required value="<%= campaign.startDate.toISOString().split('T')[0] %>">
+        </div>
+
+        <!-- End Date -->
+        <div class="col-md-6">
+          <label>End Date*</label>
+          <input type="date" class="form-control" name="endDate" required value="<%= campaign.endDate.toISOString().split('T')[0] %>">
+        </div>
+
+        <!-- Age Range -->
+        <div class="col-md-6">
+          <label>Age Range* (Years)</label>
+          <select class="form-select" name="ageRange" required>
+            <option disabled>Select Age Range</option>
+            <option value="13-18" <%= campaign.ageRange === '13-18' ? 'selected' : '' %>>13-18</option>
+            <option value="18-24" <%= campaign.ageRange === '18-24' ? 'selected' : '' %>>18-24</option>
+            <option value="25-34" <%= campaign.ageRange === '25-34' ? 'selected' : '' %>>25-34</option>
+            <option value="35-44" <%= campaign.ageRange === '35-44' ? 'selected' : '' %>>35-44</option>
+            <option value="45+" <%= campaign.ageRange === '45+' ? 'selected' : '' %>>45+</option>
+          </select>
+        </div>
+
+        <!-- Income Group -->
+        <div class="col-md-6">
+          <label>Target Income Group*</label>
+          <select class="form-select" name="incomeGroup" required>
+            <option disabled>Select Income Group</option>
+            <option value="Low" <%= campaign.incomeGroup === 'Low' ? 'selected' : '' %>>Low</option>
+            <option value="Middle" <%= campaign.incomeGroup === 'Middle' ? 'selected' : '' %>>Middle</option>
+            <option value="High" <%= campaign.incomeGroup === 'High' ? 'selected' : '' %>>High</option>
+          </select>
+        </div>
+
+        <!-- Product Name -->
+        <div class="col-md-6">
+          <label>Product Name*</label>
+          <input type="text" class="form-control" name="productName" required value="<%= campaign.productName %>" placeholder="Enter Product Name">
+        </div>
+
+        <!-- Goal -->
+        <div class="col-md-6">
+          <label>Goal*</label>
+          <select class="form-select" name="goal" required>
+            <option disabled>Select Goal</option>
+            <option value="Brand Awareness" <%= campaign.goal === 'Brand Awareness' ? 'selected' : '' %>>Brand Awareness</option>
+            <option value="Lead Generation" <%= campaign.goal === 'Lead Generation' ? 'selected' : '' %>>Lead Generation</option>
+            <option value="Sales" <%= campaign.goal === 'Sales' ? 'selected' : '' %>>Sales</option>
+            <option value="App Downloads" <%= campaign.goal === 'App Downloads' ? 'selected' : '' %>>App Downloads</option>
+          </select>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-12">
+          <label>Product Details</label>
+          <textarea class="form-control" name="productDetails" rows="2" placeholder="Enter Product Details"><%= campaign.productDetails %></textarea>
+        </div>
+
+        <!-- Engagement Type -->
+        <div class="col-md-6">
+          <label>Type of Engagement*</label>
+          <select class="form-select" name="engagementType" required>
+            <option disabled>Select Engagement</option>
+            <option value="Influencer Collaboration" <%= campaign.engagementType === 'Influencer Collaboration' ? 'selected' : '' %>>Influencer Collaboration</option>
+            <option value="UGC Campaign" <%= campaign.engagementType === 'UGC Campaign' ? 'selected' : '' %>>UGC Campaign</option>
+            <option value="Giveaway" <%= campaign.engagementType === 'Giveaway' ? 'selected' : '' %>>Giveaway</option>
+            <option value="Review Program" <%= campaign.engagementType === 'Review Program' ? 'selected' : '' %>>Review Program</option>
+          </select>
+        </div>
+
+        <!-- Target Audience -->
+        <div class="col-md-6">
+          <label>Target Audience*</label>
+          <select class="form-select" name="targetAudience" required>
+            <option disabled>Select Audience</option>
+            <option value="Students" <%= campaign.targetAudience === 'Students' ? 'selected' : '' %>>Students</option>
+            <option value="Working Professionals" <%= campaign.targetAudience === 'Working Professionals' ? 'selected' : '' %>>Working Professionals</option>
+            <option value="Parents" <%= campaign.targetAudience === 'Parents' ? 'selected' : '' %>>Parents</option>
+            <option value="General Public" <%= campaign.targetAudience === 'General Public' ? 'selected' : '' %>>General Public</option>
+          </select>
+        </div>
+
+        <!-- Target Location -->
+        <div class="col-md-6">
+          <label>Target Location*</label>
+          <select class="form-select" name="targetLocation" required>
+            <option disabled>Select Location</option>
+            <option value="Pan India" <%= campaign.targetLocation === 'Pan India' ? 'selected' : '' %>>Pan India</option>
+            <option value="Tier 1 Cities" <%= campaign.targetLocation === 'Tier 1 Cities' ? 'selected' : '' %>>Tier 1 Cities</option>
+            <option value="Tier 2 Cities" <%= campaign.targetLocation === 'Tier 2 Cities' ? 'selected' : '' %>>Tier 2 Cities</option>
+            <option value="Tier 3 Cities" <%= campaign.targetLocation === 'Tier 3 Cities' ? 'selected' : '' %>>Tier 3 Cities</option>
+          </select>
+        </div>
+
+        <!-- Submit -->
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary px-5">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  body {
+  background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+#edit-campaign {
+  padding: 60px 0;
+}
+
+.form-wrapper {
+  background: rgba(28, 28, 28, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #f0f0f0;
+}
+
+.form-control,
+.form-select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder,
+textarea::placeholder {
+  color: #ccc;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  background-color: rgba(101, 97, 97, 0.12);
+  border-color: #ff6a6a;
+  box-shadow: 0 0 0 0.2rem rgba(255, 106, 106, 0.25);
+  color: #fff;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #ff6a6a, #ff9966);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 30px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+}
+
+.form-check-label {
+  margin-right: 15px;
+  color: #ccc;
+}
+
+h2 {
+  color: #fff;
+  font-weight: 600;
+}
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select,
+textarea,
+.form-control,
+.form-select {
+  background-color: rgba(255, 255, 255, 0.05); /* lighter glassy look */
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+/* Placeholder color */
+input::placeholder,
+textarea::placeholder {
+  color: #cccccc;
+}
+
+/* On focus */
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #ff6a6a;
+  box-shadow: 0 0 5px rgba(255, 106, 106, 0.3);
+  color: #fff;
+  outline: none;
+}
+.form-check-label {
+  color: #ddd;
+}
+
+.form-control,
+.form-select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+select,
+.form-select {
+  border-radius: 10px;
+  transition: all 0.3s ease;
+   background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+}
+
+select option {
+  background-color: #1f1f1f;
+  color: #fff;
+}
+select option:hover {
+  background-color: rgba(255, 153, 102, 0.2);
+}
+.gender-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 6px;
+}
+
+.gender-group .form-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ccc;
+}
+.form-wrapper {
+  padding: 40px 30px;
+}
+
+</style>

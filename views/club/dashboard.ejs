@@ -1,0 +1,151 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="club-dashboard-container">
+  <h1 class="dashboard-heading">Welcome <%= club.name %></h1>
+
+  <div class="dashboard-grid">
+    <a href="/club/profile" class="dashboard-card bg-orange">
+    <h2>✏️ Your Club Profile</h2>
+    <p>Update your club's information and media details.</p>
+  </a>
+    <a href="/club/quotes" class="dashboard-card bg-blue">
+      <h2>📆 Current Bookings</h2>
+      <p>View and manage your current room or equipment bookings.</p>
+    </a>
+
+    <a href="/club/inventory/add" class="dashboard-card bg-green">
+      <h2>➕ Add Inventory</h2>
+      <p>Add new items to your club's inventory list.</p>
+    </a>
+
+    <a href="/club/view-inventory" class="dashboard-card bg-yellow">
+      <h2>📦 View/Edit Inventory</h2>
+      <p>Update or remove items from your inventory.</p>
+    </a>
+
+    <a href="/club/special-events" class="dashboard-card bg-purple">
+      <h2>🎉 Special Events</h2>
+      <p>Plan or manage special club events.</p>
+    </a>
+  </div>
+</div>
+
+<style>
+  
+  body {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), 
+                url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+      height: 100%;
+
+  }
+  
+
+  .club-dashboard-container {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .dashboard-heading {
+    font-size: 2.75rem;
+    text-align: center;
+    margin-bottom: 60px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+ 
+  .dashboard-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 30px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    text-decoration: none;
+    color: white;
+  }
+
+  .dashboard-card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,153,102,0.3), rgba(255,106,106,0.3));
+    z-index: 0;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .dashboard-card:hover::before {
+    opacity: 0.4;
+    
+  }
+  .dashboard-card:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.dashboard-card:hover h2,
+.dashboard-card:hover p {
+  color: white;
+  text-decoration: none;
+}
+
+
+  .dashboard-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .dashboard-card p {
+    font-size: 0.95rem;
+    z-index: 1;
+    position: relative;
+  }
+
+  /* Optional color accents for differentiation */
+  .bg-blue::before {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.3));
+  }
+
+  .bg-green::before {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.3));
+  }
+
+  .bg-yellow::before {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.3), rgba(202, 138, 4, 0.3));
+  }
+
+  .bg-purple::before {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.3));
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-card {
+      padding: 24px 18px;
+    }
+  }
+</style>

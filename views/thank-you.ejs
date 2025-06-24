@@ -1,0 +1,89 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="thank-you-container">
+  <div class="thank-you-wrapper text-center text-white">
+    <h1 class="thank-title">Thanks for your request!</h1>
+    <p class="thank-msg">Our team will get in touch with you shortly.</p>
+    <a href="/explore" class="thank-link mt-4 d-inline-block">← Back to Explore</a>
+  </div>
+</section>
+
+<style>
+  /* Full background image in body */
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    min-height: 100vh;
+  }
+
+  /* Section wrapper to avoid overlap with header/footer */
+  .thank-you-container {
+    padding-top: 120px; /* space for fixed header */
+    padding-bottom: 80px; /* space before footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px); /* full height minus header/footer */
+  }
+
+  .thank-you-wrapper {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    padding: 50px 30px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .thank-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .thank-msg {
+    font-size: 1.1rem;
+    color: #ccc;
+  }
+
+  .thank-link {
+    color: #4ea8ff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    display: inline-block;
+    transition: 0.3s;
+  }
+
+  .thank-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 576px) {
+    .thank-you-wrapper {
+      padding: 35px 20px;
+    }
+
+    .thank-title {
+      font-size: 1.7rem;
+    }
+
+    .thank-msg {
+      font-size: 1rem;
+    }
+
+    .thank-link {
+      font-size: 0.95rem;
+    }
+
+    .thank-you-container {
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+  }
+</style>

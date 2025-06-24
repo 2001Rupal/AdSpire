@@ -1,0 +1,140 @@
+<%- layout('layouts/boilerplate') %>
+
+<section id="edit-event">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-wrapper p-4 rounded-4 shadow-lg w-100" style="max-width: 950px;">
+      <h2 class="text-center mb-4">Edit Special Event</h2>
+
+      <form action="/club/special-events/edit/<%= event._id %>" method="POST" enctype="multipart/form-data" class="row g-4">
+        <div class="col-md-12">
+          <label>Event Title*</label>
+          <input type="text" name="title" class="form-control" value="<%= event.title %>" required>
+        </div>
+
+        <div class="col-md-12">
+          <label>Description*</label>
+          <textarea name="description" rows="4" class="form-control" required><%= event.description %></textarea>
+        </div>
+
+        <div class="col-md-6">
+          <label>Date*</label>
+          <input type="date" name="date" class="form-control" value="<%= event.date.toISOString().split('T')[0] %>" required>
+        </div>
+
+        <div class="col-md-6">
+          <label>Time*</label>
+          <input type="time" name="time" class="form-control" value="<%= event.time %>" required>
+        </div>
+
+        <div class="col-md-12">
+          <label>Location*</label>
+          <input type="text" name="location" class="form-control" value="<%= event.location %>" required>
+        </div>
+
+        <div class="col-md-12">
+          <label>Tags (comma separated)</label>
+          <input type="text" name="tags" class="form-control" value="<%= event.tags.join(',') %>">
+        </div>
+
+        <% if (event.media && event.media.length > 0) { %>
+          <div class="col-md-12">
+            <label>Current Media (select to delete)</label>
+            <div class="d-flex flex-wrap gap-3">
+              <% event.media.forEach(media => { %>
+                <div>
+                  <% if (media.endsWith('.mp4')) { %>
+                    <video src="<%= media %>" width="100" controls class="rounded shadow"></video>
+                  <% } else { %>
+                    <img src="<%= media %>" width="100" height="100" class="rounded shadow" style="object-fit: cover;">
+                  <% } %>
+                  <div class="form-check text-danger mt-1">
+                    <input class="form-check-input" type="checkbox" name="deleteMedia" value="<%= media %>">
+                    <label class="form-check-label">Delete</label>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        <% } %>
+
+        <div class="col-md-12">
+          <label>Upload More Media</label>
+          <input type="file" name="media" class="form-control" multiple accept="image/*,video/*">
+        </div>
+
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary px-5">Update Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  body {
+    background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #edit-event {
+    padding: 60px 0;
+    color: #fff;
+  }
+
+  #edit-event h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-wrapper {
+    background: rgba(28, 28, 28, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  #edit-event label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #f0f0f0;
+  }
+
+  #edit-event .form-control {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  #edit-event .form-control::placeholder {
+    color: #ccc;
+  }
+
+  #edit-event .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #ff6a6a;
+    box-shadow: 0 0 0 0.2rem rgba(255, 106, 106, 0.25);
+    color: #fff;
+  }
+
+  #edit-event .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 30px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #edit-event .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+  }
+</style>

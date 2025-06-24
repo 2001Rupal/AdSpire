@@ -1,0 +1,674 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="explore-page">
+
+  <!-- Hero Banner -->
+  <section class="custom-hero position-relative mb-5">
+    <div class="hero-media-container position-absolute top-0 start-0 w-100 h-100  overflow-hidden">
+      <img id="clubHeroImage" class="w-100 h-100 object-fit-cover rounded-4 hero-media" src="<%= featuredClubs?.[0]?.imageUrl || '/uploads/img/default-club.jpg' %>" alt="Featured Club" />
+      <video id="clubHeroVideo" class="w-100 h-100 object-fit-cover rounded-4 hero-media d-none" autoplay muted loop>
+        <source src="<%= featuredClubs?.[0]?.videoUrl || '' %>" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Overlay -->
+<div class="custom-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between px-4 py-4">
+      <!-- Top Icons -->
+      <div class="icon-btn-group d-flex gap-3 ms-auto">
+   <button class="icon-btn" aria-label="View Images"><i class="bi bi-image"></i></button>
+      <button class="icon-btn" aria-label="View Videos"><i class="bi bi-camera-video"></i></button>
+
+  <% if (featuredClubs?.[0]?.view360Link) { %>
+    <a href="<%= featuredClubs[0].view360Link %>" target="_blank" class="icon-btn text-decoration-none" title="360 View">
+       <i class="bi bi-camera-reels"></i>
+    </a>
+  <% } else { %>
+    <div class="icon-btn disabled" title="360 View Unavailable">
+      <i class="bi bi-camera-reels"></i>
+    </div>
+  <% } %>
+
+  <% 
+  let websiteUrl = featuredClubs?.[0]?.website || '';
+  if (websiteUrl && !websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+    websiteUrl = 'https://' + websiteUrl;
+  }
+%>
+
+<% if (websiteUrl) { %>
+  <a href="<%= websiteUrl %>" target="_blank" rel="noopener noreferrer" class="icon-btn text-decoration-none" title="Visit Website">
+    <i class="bi bi-globe2"></i>
+  </a>
+<% } else { %>
+  <div class="icon-btn disabled" title="Website Unavailable">
+    <i class="bi bi-globe2"></i>
+  </div>
+<% } %>
+
+</div>
+
+
+      <!-- Club Info -->
+      <div class="d-flex justify-content-between align-items-end flex-wrap mt-auto gap-4 w-100 mb-2">
+        <div class="text-white club-name-block ps-3 pb-3">
+          <span class="badge bg-primary px-3 py-2 mb-2 rounded-pill fs-6 d-none d-md-inline"><%= featuredClubs?.[0]?.segment || 'Premium' %></span>
+          <h1 class="fw-bold display-4 mb-1" id="clubHeroName"><%= featuredClubs?.[0]?.name || 'Club Name' %></h1>
+          <p class="mb-0 fs-5" id="clubHeroAddress"><i class="bi bi-geo-alt-fill me-2"></i> <%= featuredClubs?.[0]?.address || featuredClubs?.[0]?.location || 'N/A' %></p>
+        </div>
+        <div class="stat-box-container pe-3 pb-3">
+          <div class="stat-box text-center">
+            <h5 id="clubHeroFootfall"><%= featuredClubs?.[0]?.footfall || '10K+' %></h5>
+            <small>Total Footfall</small>
+          </div>
+          <div class="stat-box text-center">
+            <h5 id="clubHeroInventories"><%= featuredClubs?.[0]?.totalInventories || '30+' %></h5>
+            <small>Total Inventories</small>
+          </div>
+          <div class="stat-box text-center">
+            <h5 id="clubHeroMembers"><%= featuredClubs?.[0]?.totalMembers || '900+' %></h5>
+            <small>Total Members</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <div class="container-xl px-4 mb-5">
+    <form class="filter-bar row g-3 align-items-center glass-card px-4 py-4 rounded-4 shadow-lg" method="GET" action="/explore">
+      <div class="col-12 col-md-4">
+        <input type="text" name="location" class="form-control" placeholder="Search by Location" value="<%= filters?.location || '' %>">
+      </div>
+      
+      <div class="col-6  col-md-2">
+  <select name="industry" class="form-select">
+    <option value="">Industry</option>
+    <% industries?.forEach(ind => { %>
+      <option value="<%= ind %>" <%= filters?.industry === ind ? 'selected' : '' %>><%= ind %></option>
+    <% }) %>
+  </select>
+</div>
+      <div class="col-6 col-sm-6 col-md-2">
+  <select name="availability" class="form-select">
+    <option value="">Availability</option>
+    <% availabilities?.forEach(status => { %>
+      <option value="<%= status %>" <%= filters?.availability === status ? 'selected' : '' %>><%= status %></option>
+    <% }) %>
+  </select>
+</div>
+      <div class="col-6 col-sm-6 col-md-2">
+        <select name="sortBy" class="form-select">
+          <option value="latest" <%= filters?.sortBy === 'latest' ? 'selected' : '' %>>Latest</option>
+          <option value="popularity" <%= filters?.sortBy === 'popularity' ? 'selected' : '' %>>Popularity</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-1">
+        <button type="submit" class="btn btn-primary w-100 rounded-pill">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Club Cards -->
+  <div class="container-xl px-4 pb-5">
+    <h2 class="text-white fw-bold mb-4">List of Clubs</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-cols-lg-3 g-4">
+      <% clubs.forEach(club => { %>
+        <div class="col">
+          <a href="/explore/<%= club._id %><%= campaign ? '?campaignId=' + campaign._id : '' %>" class="text-decoration-none">
+            <div class="explore-club-card card h-100 glass-card hover-scale">
+              <div class="club-img-wrapper position-relative">
+
+                <img src="<%= club.imageUrl || '/assets/img/default-club.jpg' %>" class="club-img" alt="<%= club.name %>">
+                <% if (club.isSpecialEvent) { %>
+                  <span class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 small rounded-end">
+                    <i class="bi bi-star-fill"></i> Special Event
+                  </span>
+                <% } %>
+                <span class="segment-badge badge bg-dark text-white position-absolute bottom-0 start-0 m-3 px-3 py-2 rounded-pill">
+                    <%= club.segment || 'Premium' %>
+                  </span>              </div>
+             <div class="card-body">
+
+  <div class="d-flex justify-content-between mb-1 small text-white-50">
+  <span class="club-location text-truncate"><i class="bi bi-geo-alt"></i> <%= club.location %></span>
+  <span class="badge bg-light text-dark">Reach <%= club.reach || '4545+' %></span>
+</div>
+
+  <!-- Divider line -->
+  <hr class="card-divider my-2">
+
+  <h5 class="fw-bold mb-2 text-white"><%= club.name %></h5>
+  <p class="text-white-50 small mb-3">
+    <%= club.description ? club.description.substring(0, 90) + '...' : 'No description available.' %>
+  </p>
+
+  <!-- Another divider if needed -->
+  <hr class="card-divider my-2">
+
+  <div class="bottom-stats d-flex justify-content-between text-white-50 small">
+    <span>Total Members - <%= club.totalMembers || '900' %></span>
+    <span><%= club.inventoryCount || '27' %> Inventories</span>
+  </div>
+</div>
+
+            </div>
+          </a>
+        </div>
+      <% }) %>
+    </div>
+
+    <% if (campaign) { %>
+      <div class="using-campaign mt-3 text-info">Using Campaign: <%= campaign.name %></div>
+    <% } %>
+
+    <% if (typeof totalSelectedCount !== 'undefined') { %>
+      <div class="badge-selected-count">
+        <span><%= totalSelectedCount %> selected</span>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Data & Scripts -->
+<script id="featuredClubsData" type="application/json">
+  <%- JSON.stringify(featuredClubs || []) %>
+</script>
+
+<script>
+  const featuredClubs = JSON.parse(document.getElementById('featuredClubsData').textContent);
+  let currentIndex = 0;
+  
+
+ function setMediaVisibility(hasVideo, showVideo) {
+    const image = document.getElementById('clubHeroImage');
+    const video = document.getElementById('clubHeroVideo');
+
+    if (showVideo && hasVideo) {
+      image.classList.add('d-none');
+      video.classList.remove('d-none');
+      video.play();
+    } else {
+      video.pause();
+      video.classList.add('d-none');
+      image.classList.remove('d-none');
+    }
+
+    document.querySelectorAll('.icon-btn[data-media]').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    const type = showVideo ? 'video' : 'image';
+    const activeBtn = document.querySelector(`.icon-btn[data-media="${type}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+   setMediaVisibility(!!featuredClubs[0]?.videoUrl, false);
+
+  // Add event listeners to switch between image/video
+  document.querySelectorAll('.icon-btn[data-media]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.getAttribute('data-media');
+      const hasVideo = !!featuredClubs[0]?.videoUrl;
+      setMediaVisibility(hasVideo, type === 'video');
+    });
+  });
+
+
+  function updateHeroContent(index) {
+    const club = featuredClubs[index];
+    if (!club) return;
+    document.getElementById('clubHeroName').textContent = club.name || 'Club Name';
+    document.getElementById('clubHeroAddress').innerHTML = `<i class="bi bi-geo-alt-fill me-2"></i> ${club.address || club.location || 'N/A'}`;
+    document.getElementById('clubHeroFootfall').textContent = club.footfall || '10K+';
+    document.getElementById('clubHeroInventories').textContent = club.totalInventories || '30+';
+    document.getElementById('clubHeroMembers').textContent = club.totalMembers || '900+';
+    document.getElementById('clubHeroImage').src = club.imageUrl || '/assets/img/default-club.jpg';
+
+    const video = document.getElementById('clubHeroVideo');
+    if (club.videoUrl && video) {
+      video.querySelector('source').src = club.videoUrl;
+      video.load();
+    }
+
+    setMediaVisibility(!!club.videoUrl,true);
+
+    const videoBtn = document.querySelector('.icon-btn[data-media="video"]');
+const imageBtn = document.querySelector('.icon-btn[data-media="image"]');
+
+if (club.videoUrl) {
+  videoBtn.classList.remove('disabled');
+  videoBtn.classList.add('active');
+  imageBtn.classList.remove('active');
+} else {
+  videoBtn.classList.add('disabled');
+  videoBtn.classList.remove('active');
+  imageBtn.classList.add('active');
+}
+    const view360 = document.querySelector('.icon-btn-group a[title="360 View"]');
+    const view360Placeholder = document.querySelector('.icon-btn-group .disabled[title="360 View Unavailable"]');
+    if (club.view360Link) {
+      if (view360) {
+        view360.href = club.view360Link;
+        view360.classList.remove('d-none');
+      }
+      if (view360Placeholder) view360Placeholder.classList.add('d-none');
+    } else {
+      if (view360) view360.classList.add('d-none');
+      if (view360Placeholder) view360Placeholder.classList.remove('d-none');
+    }
+  }
+
+  document.querySelectorAll('.icon-btn[data-media]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('disabled')) return;
+      const media = btn.getAttribute('data-media');
+      setMediaVisibility(!!featuredClubs[currentIndex]?.videoUrl, media === 'video');
+      document.querySelectorAll('.icon-btn[data-media]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Auto Rotate Featured Clubs
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % featuredClubs.length;
+    updateHeroContent(currentIndex);
+  }, 8000);
+
+  updateHeroContent(currentIndex);
+</script>
+
+<script>
+  if (performance.navigation.type === 1) { // 1 means normal reload (not back/forward)
+    if (window.location.search) {
+      // Redirect to clean URL
+      window.location.href = window.location.pathname;
+    }
+  }
+</script>
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #f1f1f1;
+}
+.hero-media {
+  pointer-events: none;
+}
+
+.custom-hero-overlay {
+  pointer-events: auto;
+  z-index: 2;
+  
+}
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.5));
+  margin: 1rem 0;
+  opacity: 0.9;
+}
+.club-name-block {
+  margin-left: 1rem;  /* space from left */
+  margin-bottom: 1.5rem;  /* space from bottom */
+}
+.club-location {
+  max-width: 65%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+}
+.icon-btn {
+  position: relative;
+  z-index: 3;
+}
+.icon-btn.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #fff;
+}
+.hero-media {
+  transition: opacity 0.5s ease-in-out;
+}
+.stat-box-container {
+  padding-bottom: 2rem;
+  padding-right: 1rem;
+}
+.segment-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+   z-index: 2;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
+}
+
+/* Hero Banner */
+.custom-hero {
+ width: 100vw; /* full width */
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  min-height: 500px;
+  max-height: 600px;
+  margin: 0 auto;
+  border-radius: 0;
+}
+.custom-hero-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
+  border-radius: 0 0 18px 18px;
+  color: white;
+ 
+  
+}
+
+/* Stat Boxes */
+.stat-box-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.stat-box {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1rem;
+  border-radius: 1rem;
+  min-width: 110px;
+  text-align: center;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
+}
+
+/* Club Cards */
+.explore-club-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+.explore-club-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 40px rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.explore-club-card .card-body {
+  padding: 1.25rem;
+}
+.club-img-wrapper {
+  height: 200px;
+  overflow: hidden;
+  border-radius: 1.5rem 1.5rem 0 0;
+  position: relative;
+}
+.explore-club-card .card-body h5 {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.explore-club-card .card-body p {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.explore-club-card .bottom-stats span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Badges */
+.explore-club-card .badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 1rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.explore-club-card .badge.bg-dark {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.explore-club-card .badge.bg-light {
+  background: rgba(255, 255, 255, 0.9);
+  color: #222;
+}
+
+/* Hover scale effect */
+.hover-scale {
+  transition: all 0.3s ease-in-out;
+}
+.hover-scale:hover {
+  transform: scale(1.04);
+}
+
+.explore-club-card::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 1.7rem;
+  background: linear-gradient(40deg, #00fbffa2,  #00fbff99);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.explore-club-card:hover::before {
+  opacity: 0.2;
+}
+
+.club-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Icon Buttons */
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  color: #ff5722;
+}
+.icon-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+/* Remove forced negative margin to avoid header overlap */
+.custom-hero {
+  margin-top: 0;
+}
+
+/* Glow on focus for inputs */
+.form-control:focus,
+.form-select:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.25);
+  outline: none;
+}
+
+/* Smooth hover on filter */
+.filter-bar {
+  transition: box-shadow 0.3s ease;
+}
+.filter-bar:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+}
+
+/* Badge enhancement */
+.badge {
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+/* Improve form and text contrast in dark mode */
+.form-control,
+.form-select {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f1f1;
+}
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.form-select option {
+    background-color: rgba(84, 82, 82, 0.95) !important;
+  color: #555353;
+}
+
+/* Hover effect for club cards */
+.hover-scale {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-scale:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(255, 255, 255, 0.1);
+}
+
+/* Improve spacing and typography */
+h1, h2, h5 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+p, small {
+  font-size: 0.95rem;
+}
+p {
+  margin-bottom: 0.6rem;
+}
+small {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+/* Tag styling */
+.badge {
+  font-weight: 500;
+  border-radius: 1rem;
+}
+.badge.bg-dark {
+  background-color: rgba(0,0,0,0.6);
+}
+
+/* Custom Search Button */
+.btn-primary {
+  background: linear-gradient(135deg, #0066ff, #3399ff);
+  border: none;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0050cc, #2288ee);
+}
+
+/* Section spacing */
+.explore-page section,
+.explore-page .container-xl {
+  margin-bottom: 2rem;
+}
+/* Glassy Form Inputs and Selects */
+.filter-bar .form-control,
+.filter-bar .form-select {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.filter-bar .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.filter-bar .form-select:focus,
+.filter-bar .form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+}
+.filter-bar select option {
+  background-color: #a7a6a680;
+  color: #fff;
+    backdrop-filter: blur(10px);
+
+}
+/* Add better spacing on small screens */
+@media (max-width: 768px) {
+  .filter-bar .col-6, .filter-bar .col-12 {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Make the search button more prominent */
+.filter-bar .btn-primary {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .custom-hero-overlay {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+.explore-page h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 576px) {
+  .club-name-block h1 {
+    font-size: 1.8rem;
+  }
+
+  .explore-club-card .card-body h5 {
+    font-size: 1rem;
+  }
+
+  .explore-club-card .card-body p {
+    font-size: 0.85rem;
+  }
+}
+.filter-bar input[name="location"] {
+  min-width: 200px;
+  max-width: 100%;
+}
+
+
+</style>

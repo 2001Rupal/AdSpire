@@ -1,0 +1,238 @@
+<%- layout('layouts/boilerplate') %>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #ff5555;
+    --primary-hover: #e04444;
+    --bg-dark: #0c0c0c;
+    --bg-light: #1a1a1a;
+    --text-light: #eee;
+    --text-muted: #999;
+    --glass-bg: rgba(0, 0, 0, 0.25);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, rgba(12,12,12,0.4), rgba(12,12,12,0.6)),
+              url('/uploads/clubs/pexels-rdne-7551729.jpg') center/cover no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: var(--text-light);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  line-height: 1.6;
+  }
+
+  #hero {
+    opacity: 0;
+    transition: all 0.8s ease;
+    min-height: 110vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 0;
+    border-radius: 14px;
+    animation: fadeIn 1s ease;
+  }
+
+  #hero.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #ff5555, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-btn {
+    background-color: var(--primary);
+    color: white;
+    padding: 14px 36px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px #ff5555;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px #ff5555;
+  }
+
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  .modal-btn {
+  background: linear-gradient(90deg, #ff5555, #ff9966);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 26px;
+  margin: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 85, 85, 0.3);
+}
+
+.modal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 85, 85, 0.5);
+}
+
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+  #hero {
+    padding: 1rem 1rem;
+    min-height: auto;
+    margin-top: 5rem;
+  }
+.hero-content {
+  padding: 1.5rem 1rem !important; /* reduce padding inside glass box */
+}
+  .hero-content h1 {
+    font-size: 1.75rem;
+    line-height: 1.4;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .cta-btn {
+    font-size: 0.95rem;
+    padding: 12px 24px;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  #userTypeModal {
+    width: 90%;
+    padding: 24px 20px;
+  }
+
+  #userTypeModal h3 {
+    font-size: 1.25rem;
+  }
+
+  #userTypeModal p {
+    font-size: 0.95rem;
+  }
+
+  .modal-btn {
+    font-size: 0.95rem;
+    padding: 12px 18px;
+    width: 100%;
+    max-width: 140px;
+    margin: 0.5rem auto;
+    display: block;
+  }
+}
+
+</style>
+
+<script>
+  window.addEventListener("load", () => {
+    document.getElementById("hero").classList.add("visible");
+  });
+
+  // Stop scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  // Scroll to top before reload
+  window.addEventListener("beforeunload", () => {
+    window.scrollTo(0, 0);
+  });
+
+  // Hero animation
+  window.addEventListener("load", () => {
+    document.getElementById("hero").classList.add("visible");
+  });
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<section id="hero">
+  <div class="hero-content glass">
+    <h1>Bridge the Gap Between Brands & Nightlife</h1>
+    <p>Connect with the right clubs. Run campaigns that resonate. Track results with ease.</p>
+    <button onclick="openUserTypeModal()" class="cta-btn">Start Your Journey</button>
+  </div>
+</section>
+
+<!-- Minimal Modal -->
+<div id="userTypeModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--glass-bg); backdrop-filter: blur(12px); padding: 40px 30px; border-radius: 16px; z-index: 1000; width: 360px; text-align: center;">
+  <h3 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Who Are You?</h3>
+  <p style="color: #ccc;">Choose your role to continue:</p>
+  <div>
+    <button class="modal-btn" onclick="redirectToBrand()">Brand</button>
+    <button class="modal-btn" onclick="redirectToClub()">Club Owner</button>
+  </div>
+</div>
+
+<div id="overlay" onclick="closeUserTypeModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6); z-index: 999;"></div>
+
+<script>
+  function openUserTypeModal() {
+    document.getElementById('userTypeModal').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function closeUserTypeModal() {
+    document.getElementById('userTypeModal').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  function redirectToBrand() {
+    window.location.href = '/register';
+  }
+
+  function redirectToClub() {
+    window.location.href = '/club/create-profile';
+  }
+</script>

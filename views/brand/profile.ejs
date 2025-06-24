@@ -1,0 +1,196 @@
+<%- layout('layouts/boilerplate') %>
+
+<%- include('../partials/flash') %>
+
+
+<section id="brand-profile" class="d-flex justify-content-center align-items-center min-vh-100 px-3">
+  <div class="profile-wrapper p-4 rounded-5 shadow-lg w-100" style="max-width: 950px;">
+
+    <h1 class="text-center mb-5 display-4 fw-bold text-gradient"><%= user.brandName %></h1>
+
+    <!-- Info Grid -->
+    <div class="info-grid mb-5">
+      <% const brandInfo = [
+        { icon: "bi-person-fill", label: "User Name", value: user.userName },
+        { icon: "bi-briefcase-fill", label: "Designation", value: user.designation },
+        { icon: "bi-industry", label: "Industry", value: user.industry },
+        { icon: "bi-geo-alt-fill", label: "City", value: user.city },
+        { icon: "bi-map-fill", label: "State", value: user.state },
+        { icon: "bi-globe", label: "Website", value: user.website ? `<a href="${user.website}" target="_blank">${user.website}</a>` : 'N/A' },
+        { icon: "bi-envelope-fill", label: "Email", value: user.email },
+        { icon: "bi-telephone-fill", label: "Contact Number", value: user.contactNumber },
+        { icon: "bi-house-door-fill", label: "Address", value: user.address },
+        { icon: "bi-geo-fill", label: "Pincode", value: user.pincode }
+      ]; %>
+
+      <% brandInfo.forEach(item => { %>
+        <div class="info-item border-bottom pb-2 mb-2">
+          <i class="bi <%= item.icon %> me-2 text-accent"></i>
+          <strong><%= item.label %>:</strong> <span><%- item.value %></span>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/profile/edit" class="btn btn-primary px-5 py-2 fs-5 fw-semibold shadow-sm">Edit Profile</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  body {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+
+  .profile-wrapper {
+    background: rgba(30, 30, 30, 0.65);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    margin-top: 3rem;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-accent {
+    color: #ff8080;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .info-item {
+    font-size: 1.05rem;
+    font-weight: 500;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .info-item strong {
+    color: #ff6a6a;
+    min-width: 140px;
+  }
+
+  a {
+    color: #ff6a6a;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: #ff9966;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    box-shadow: 0 8px 28px rgba(255, 106, 106, 0.4);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 44px rgba(255, 106, 106, 0.65);
+  }
+  .flash-success,
+.flash-error {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  transition: opacity 0.5s ease;
+}
+
+.flash-success {
+  background-color: #2e6449;
+  color: #c8f5db;
+}
+
+.flash-error {
+  background-color: #7d2f2f;
+  color: #ffdede;
+}
+@media (max-width: 768px) {
+  .profile-wrapper {
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .info-item {
+  font-size: 0.95rem;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+  .info-item strong {
+    min-width: auto;
+    margin-bottom: 4px;
+  }
+
+  h1.display-4 {
+    font-size: 1.8rem;
+  }
+
+  .btn-primary {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .flash-success,
+  .flash-error {
+    font-size: 0.9rem;
+    padding: 10px;
+    margin: 10px 15px;
+  }
+
+  #brand-profile {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const success = document.querySelector('.flash-success');
+    const error = document.querySelector('.flash-error');
+
+    if (success) {
+      setTimeout(() => success.style.opacity = '0', 3500);
+      setTimeout(() => success.remove(), 4500);
+    }
+
+    if (error) {
+      setTimeout(() => error.style.opacity = '0', 3500);
+      setTimeout(() => error.remove(), 4500);
+    }
+  });
+</script>

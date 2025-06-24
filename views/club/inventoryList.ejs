@@ -1,0 +1,172 @@
+<%- layout('layouts/boilerplate') %>
+
+<%- include('../partials/flash') %>
+
+<div class="inventory-container">
+  <h2 class="inventory-heading">📦 Your Inventory</h2>
+
+  <div class="inventory-table-wrapper">
+    <table class="inventory-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Spot</th>
+          <th>Availability</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inventories.forEach(item => { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.spot %></td>
+            <td><%= item.availability %></td>
+            <td>
+              <div class="action-buttons">
+                <a href="/club/edit-inventory/<%= item._id %>" class="edit-btn">✏️ Edit</a>
+                <form action="/club/delete-inventory/<%= item._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this inventory?');">
+                  <button type="submit" class="delete-btn">🗑️ Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85)),
+      url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .inventory-container {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 24px;
+  }
+
+  .inventory-heading {
+    font-size: 2.75rem;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: 600;
+    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .inventory-table-wrapper {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  .inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+  }
+
+  .inventory-table thead {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .inventory-table th {
+    padding: 18px;
+    font-size: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .inventory-table td {
+    padding: 16px 18px;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    vertical-align: middle;
+  }
+
+  .inventory-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .edit-btn {
+    color: #fff;
+    background: rgba(96, 165, 250, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  }
+
+  .edit-btn:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(96, 165, 250, 0.35);
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  }
+
+  .delete-btn {
+    color: #fff;
+    background: rgba(239, 68, 68, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+  }
+
+  .delete-btn:hover {
+    background: rgba(239, 68, 68, 0.35);
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .inventory-heading {
+      font-size: 2.2rem;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>

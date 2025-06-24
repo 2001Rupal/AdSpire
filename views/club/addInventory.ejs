@@ -1,0 +1,188 @@
+<%- layout('layouts/boilerplate') %>
+
+<section id="register">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-wrapper p-4 rounded-4 shadow-lg w-100" style="max-width: 950px;">
+      <h2 class="text-center mb-4">Add Inventory</h2>
+      <form action="/club/inventory/add" method="POST" enctype="multipart/form-data" class="row g-4">
+
+        <div class="col-md-6">
+          <label>Inventory Name*</label>
+          <input type="text" class="form-control" name="name" required placeholder="Enter Inventory Name">
+        </div>
+
+        <div class="col-md-6">
+          <label>Spot</label>
+          <input type="text" class="form-control" name="spot" placeholder="Spot">
+        </div>
+
+        <div class="col-md-6">
+          <label>360 View Link</label>
+          <input type="text" class="form-control" name="view360Link" placeholder="https://360view.com">
+        </div>
+
+        <div class="col-md-6">
+          <label>Availability</label>
+          <input type="text" class="form-control" name="availability" placeholder="e.g. Weekends, Evenings">
+        </div>
+
+        <div class="col-md-6">
+          <label>Reach</label>
+          <input type="text" class="form-control" name="reach" placeholder="e.g. 10,000+ monthly">
+        </div>
+
+        <div class="col-md-6">
+          <label>Dimensions</label>
+          <input type="text" class="form-control" name="dimensions" placeholder="e.g. 10ft x 5ft">
+        </div>
+
+        <div class="col-md-12">
+          <label>Description</label>
+          <textarea class="form-control" name="description" rows="2" placeholder="Brief description"></textarea>
+        </div>
+
+        <div class="col-md-12">
+          <label>Exclusion Details</label>
+          <textarea class="form-control" name="exclusionDetails" rows="2" placeholder="Mention any exclusions"></textarea>
+        </div>
+
+        <div class="col-md-12">
+          <label>Guidelines</label>
+          <textarea class="form-control" name="guidelines" rows="2" placeholder="Specify guidelines"></textarea>
+        </div>
+
+        <div class="col-md-12">
+          <label>Inventory Media (Images/Videos)</label>
+            <div class="dropzone text-center p-3 border border-dashed rounded">
+          <input type="file" class="form-control" name="media" multiple accept="image/*,video/*">
+            <small class="text-warning d-block mt-1">You can upload up to 10 files (images or videos).</small>
+            </div>
+        </div>
+
+        <hr class="mt-3">
+        <div class="col-md-12">
+          <h4 class="text-light">Sub-Inventories</h4>
+          <div id="subInventoryContainer">
+            <div class="row subInventoryGroup">
+              <div class="col-md-6">
+                <input type="text" class="form-control mb-2" name="subInventories[0][name]" placeholder="Sub-Inventory Name" required>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary mt-2" onclick="addSubInventory()">+ Add More Sub-Inventory</button>
+        </div>
+
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary px-5">Add Inventory</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+let subInventoryIndex = 1;
+function addSubInventory() {
+  const container = document.getElementById('subInventoryContainer');
+  const html = `
+    <div class="row subInventoryGroup mt-2">
+      <div class="col-md-6">
+        <input type="text" class="form-control" name="subInventories[${subInventoryIndex}][name]" placeholder="Sub-Inventory Name" required>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+  subInventoryIndex++;
+}
+</script>
+<script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const files = document.querySelector('input[name="media"]').files;
+    if (files.length > 10) {
+      alert("Please upload no more than 10 files.");
+      e.preventDefault(); // prevent form submission
+    }
+  });
+</script>
+
+
+<style>
+  body {
+    background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #register {
+    padding: 60px 0;
+    color: #fff;
+  }
+
+  #register h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-wrapper {
+    background: rgba(28, 28, 28, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  #register label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #f0f0f0;
+  }
+
+  #register .form-control {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  #register .form-control::placeholder {
+    color: #ccc;
+  }
+
+  #register .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #ff6a6a;
+    box-shadow: 0 0 0 0.2rem rgba(255, 106, 106, 0.25);
+    color: #fff;
+  }
+
+  #register .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 30px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #register .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    border-radius: 10px;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+</style>

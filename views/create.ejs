@@ -1,0 +1,291 @@
+<%- layout('layouts/boilerplate') %>
+
+<%- include('partials/flash') %>
+
+
+
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div id="create-campaign" class="form-wrapper p-4 rounded-4 shadow-lg w-100" style="max-width: 950px;">
+      <h2 class="text-center mb-4">Create Campaign</h2>
+
+      <form class="row g-4" action="/campaigns/create" method="POST">
+
+        <!-- Campaign Name -->
+        <div class="col-md-6">
+          <label>Brand / Campaign Name*</label>
+          <input type="text" class="form-control" name="name" required placeholder="Enter Campaign Name">
+        </div>
+
+ <div class="col-md-6">
+  <label>Gender*</label>
+  <div class="row g-2">
+    <div class="col-4 form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Male" id="genderMale" required>
+      <label class="form-check-label" for="genderMale">Male</label>
+    </div>
+    <div class="col-4 form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Female" id="genderFemale">
+      <label class="form-check-label" for="genderFemale">Female</label>
+    </div>
+    <div class="col-4 form-check">
+      <input class="form-check-input" type="radio" name="gender" value="Both" id="genderBoth">
+      <label class="form-check-label" for="genderBoth">Both</label>
+    </div>
+  </div>
+</div>
+
+        <!-- Start Date -->
+        <div class="col-md-6">
+          <label>Start Date*</label>
+          <input type="date" class="form-control" name="startDate" required>
+        </div>
+
+        <!-- End Date -->
+        <div class="col-md-6">
+          <label>End Date*</label>
+          <input type="date" class="form-control" name="endDate" required>
+        </div>
+
+        <!-- Age Range -->
+        <div class="col-md-6">
+          <label>Age Range* (Years)</label>
+          <select class="form-select" name="ageRange" required>
+            <option disabled selected>Select Age Range</option>
+            <option value="13-18">13-18</option>
+            <option value="18-24">18-24</option>
+            <option value="25-34">25-34</option>
+            <option value="35-44">35-44</option>
+            <option value="45+">45+</option>
+          </select>
+        </div>
+
+        <!-- Income Group -->
+        <div class="col-md-6">
+          <label>Target Income Group*</label>
+          <select class="form-select" name="incomeGroup" required>
+            <option disabled selected>Select Income Group</option>
+            <option value="Low">Low</option>
+            <option value="Middle">Middle</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+
+        <!-- Product Name -->
+        <div class="col-md-6">
+          <label>Product Name*</label>
+          <input type="text" class="form-control" name="productName" required placeholder="Enter Product Name">
+        </div>
+
+        <!-- Campaign Goal -->
+        <div class="col-md-6">
+          <label>Goal*</label>
+          <select class="form-select" name="goal" required>
+            <option disabled selected>Select Goal</option>
+            <option value="Brand Awareness">Brand Awareness</option>
+            <option value="Lead Generation">Lead Generation</option>
+            <option value="Sales">Sales</option>
+            <option value="App Downloads">App Downloads</option>
+          </select>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-12">
+          <label>Product Details</label>
+          <textarea class="form-control" name="productDetails" rows="2" placeholder="Enter Product Details"></textarea>
+        </div>
+
+        <!-- Engagement Type -->
+        <div class="col-md-6">
+          <label>Type of Engagement*</label>
+          <select class="form-select" name="engagementType" required>
+            <option disabled selected>Select Engagement</option>
+            <option value="Influencer Collaboration">Influencer Collaboration</option>
+            <option value="UGC Campaign">UGC Campaign</option>
+            <option value="Giveaway">Giveaway</option>
+            <option value="Review Program">Review Program</option>
+          </select>
+        </div>
+
+        <!-- Target Audience -->
+        <div class="col-md-6">
+          <label>Target Audience*</label>
+          <select class="form-select" name="targetAudience" required>
+            <option disabled selected>Select Audience</option>
+            <option value="Students">Students</option>
+            <option value="Working Professionals">Working Professionals</option>
+            <option value="Parents">Parents</option>
+            <option value="General Public">General Public</option>
+          </select>
+        </div>
+
+        <!-- Target Location -->
+        <div class="col-md-6">
+          <label>Target Location*</label>
+          <select class="form-select" name="targetLocation" required>
+            <option disabled selected>Select Location</option>
+            <option value="Pan India">Pan India</option>
+            <option value="Tier 1 Cities">Tier 1 Cities</option>
+            <option value="Tier 2 Cities">Tier 2 Cities</option>
+            <option value="Metro Cities">Metro Cities</option>
+          </select>
+        </div>
+
+        <!-- Submit -->
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary px-5">Submit</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  body {
+background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;    font-family: 'Poppins', sans-serif;    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #create-campaign {
+    padding: 60px 0;
+    color: #fff;
+  }
+
+  #create-campaign h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-wrapper {
+    background: rgba(28, 28, 28, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+    margin-top: 3rem;
+  }
+
+  #create-campaign label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #f0f0f0;
+  }
+
+  #create-campaign .form-control,
+  #create-campaign .form-select,
+  #create-campaign textarea {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  #create-campaign .form-control::placeholder {
+    color: #ccc;
+    
+  }
+
+  #create-campaign .form-control:focus,
+  #create-campaign .form-select:focus,
+  #create-campaign textarea:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #ff6a6a;
+    box-shadow: 0 0 0 0.2rem rgba(255, 106, 106, 0.25);
+    color: #fff;
+  }
+
+  #create-campaign .form-check-label {
+    color: #ddd;
+  }
+
+  #create-campaign .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 30px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #create-campaign .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+  }
+
+  #create-campaign .form-select option {
+    background-color: rgba(84, 82, 82, 0.95);
+    color: #fff;
+  }
+
+  #create-campaign .form-select option:hover,
+  #create-campaign .form-select option:checked {
+    background-color: rgba(255, 106, 106, 0.2);
+    color: #fff;
+  }
+  #create-campaign .form-select option {
+  background-color: #2a2a2a;  /* default background */
+  color: #fff;
+}
+
+#create-campaign .form-select option:checked {
+  background-color: #848181e7;
+  color: #fff;
+}
+
+/* This may work on some browsers */
+#create-campaign .form-select option:hover {
+  background-color: #444 !important;
+}
+
+#create-campaign .form-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#create-campaign .form-check-input {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+#create-campaign .form-check-input:checked {
+  background-color: #ff6a6a;
+  border-color: #ff6a6a;
+  box-shadow: 0 0 0 0.15rem rgba(255, 106, 106, 0.5);
+}
+
+@media (max-width: 768px) {
+  #create-campaign {
+    padding: 20px 10px;
+  }
+
+  #create-campaign h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .form-wrapper {
+    padding: 20px;
+    margin-top: 2rem;
+  }
+
+  #create-campaign .form-check {
+    flex: 1 1 100%;
+  }
+
+  #create-campaign .btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+</style>
+
+

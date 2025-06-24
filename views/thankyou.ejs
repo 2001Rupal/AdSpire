@@ -1,0 +1,85 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="thankyou-container">
+  <div class="thankyou-box">
+    <h1 class="thankyou-heading">Thank You!</h1>
+    <p class="thankyou-subtext">Your quote has been submitted successfully.</p>
+    <p class="thankyou-info">Our team will reach out soon with pricing and availability details.</p>
+    <a href="/dashboard" class="btn-action">Go to Dashboard</a>
+  </div>
+</section>
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  background: url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .thankyou-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .thankyou-box {
+    background-color: #2b1c1c;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(168, 107, 75, 0.3);
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .thankyou-heading {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  .thankyou-subtext {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+  }
+
+  .thankyou-info {
+    font-size: 0.95rem;
+    color: #c2b8b8;
+    margin-bottom: 30px;
+  }
+
+  .btn-action {
+    background-color: #a86b4b;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .btn-action:hover {
+    background-color: #8e563b;
+  }
+
+  @media (max-width: 480px) {
+    .thankyou-box {
+      padding: 30px 20px;
+    }
+
+    .thankyou-heading {
+      font-size: 1.8rem;
+    }
+
+    .btn-action {
+      width: 100%;
+      display: inline-block;
+    }
+  }
+</style>

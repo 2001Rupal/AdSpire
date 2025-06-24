@@ -1,0 +1,98 @@
+<%- layout('layouts/boilerplate') %>
+
+<%- include('partials/flash') %>
+
+<section id="enquiry-form">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-wrapper p-4 rounded-4 shadow-lg w-100" style="max-width: 500px;">
+      <form action="/enquiry" method="POST">
+        <h2 class="text-center mb-4">Enquiry Form</h2>
+
+        <div class="mb-3">
+          <label>Your Name</label>
+          <input type="text" name="name" required class="form-control" placeholder="Enter your name" />
+        </div>
+
+        <div class="mb-3">
+          <label>Your Email</label>
+          <input type="email" name="email" required class="form-control" placeholder="Enter your email" />
+        </div>
+
+        <div class="mb-3">
+          <label>Your Contact Number</label>
+          <input type="text" name="contactNumber" required class="form-control" placeholder="Enter your contact number" />
+        </div>
+
+        <div class="mb-3">
+          <label>Description</label>
+          <textarea name="description" rows="4" required class="form-control" placeholder="Tell us about your enquiry..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  body {
+background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+              url('/uploads/clubs/1746288248790-791790165.jpg') no-repeat center center fixed;    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #enquiry-form h2 {
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .form-wrapper {
+    background: rgba(28, 28, 28, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+    color: #fff;
+  }
+
+  #enquiry-form label {
+    font-weight: 500;
+    color: #f0f0f0;
+  }
+
+  #enquiry-form .form-control {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+  }
+
+  #enquiry-form .form-control::placeholder {
+    color: #ccc;
+  }
+
+  #enquiry-form .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #ff6a6a;
+    box-shadow: 0 0 0 0.2rem rgba(255, 106, 106, 0.25);
+    color: #fff;
+  }
+
+  #enquiry-form .btn-primary {
+    background: linear-gradient(90deg, #ff6a6a, #ff9966);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 30px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(255, 106, 106, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #enquiry-form .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 106, 106, 0.5);
+  }
+</style>
