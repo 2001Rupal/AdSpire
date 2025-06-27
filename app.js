@@ -49,6 +49,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 const isLocalhost = process.env.NODE_ENV !== 'production';
 
+if (!isLocalhost) {
+  app.set('trust proxy', 1); 
+}
+
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'adspire_fallback',
   resave: false,
@@ -61,9 +66,9 @@ app.use(session({
   }),
   cookie: {
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
-    secure: !isLocalhost,
+    secure: !isLocalhost ? true : false,
   httpOnly: true,
-    sameSite: 'none'
+    sameSite: !isLocalhost ? 'none' : 'lax',
  
   }
 }));
