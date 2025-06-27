@@ -46,11 +46,14 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected Successfully'))
 .catch(err => console.warn('⚠️ MongoDB connection failed:', err.message));
 
+
+const isLocalhost = process.env.NODE_ENV !== 'production';
+
 app.use(session({
-  secret: 'acb123@@#15',
+  secret: process.env.SESSION_SECRET || 'adspire_fallback',
   resave: false,
   saveUninitialized: false,
-  rolling: true, // Optional: renews session on each request
+  rolling: true, 
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
     collectionName: 'sessions',
@@ -58,7 +61,10 @@ app.use(session({
   }),
   cookie: {
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
-  secure: process.env.NODE_ENV === 'production'
+    secure: !isLocalhost,
+  httpOnly: true,
+    sameSite: 'none'
+ 
   }
 }));
 
